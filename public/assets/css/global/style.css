@@ -34,6 +34,7 @@ body {
 }
 
 #page-main {
+  padding-bottom: 50px;
   text-align: center;
 }
 #page-main .content-inner > * {
@@ -43,6 +44,13 @@ body {
   font-family: serif;
   font-weight: bold;
   font-size: 3.2rem;
+}
+#page-main pre {
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid #090;
+  background: #cfc;
+  text-align: left;
 }
 
 #page-footer {

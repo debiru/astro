@@ -3,11 +3,17 @@ import Layout from '/src/layouts/Layout.astro';
 import Util from '/src/config/Util';
 import { app, args, assets, img, route } from '/src/config/view';
 const pageArgs = {};
+const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
+const starterKitContent = await fetch(starterKitUrl).then(response => response.text());
 ---
 
 <Layout args={pageArgs}>
   <div class="content-inner">
     <h1>Welcome to Astro Site</h1>
-    <p class="sample-link"><a href={ route('/subpage') }>Subpage</a></p>
+    <p><a href={ route('/subpage') }>Subpage</a></p>
+    <h1>Astro Starter Kit</h1>
+    <p><a href={ starterKitUrl }>{ starterKitUrl }</a></p>
+    <p><a href="https://qiita.com/debiru/items/a5ac8219b696045f88f5" target="_blank">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</a></p>
+    <pre>{ starterKitContent }</pre>
   </div>
 </Layout>
