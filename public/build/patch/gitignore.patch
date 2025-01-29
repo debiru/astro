@@ -1,0 +1,11 @@
+diff --git a/.gitignore b/.gitignore
+index 16d54bb..3c9f7c1 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,5 +1,5 @@
+ # build output
+-dist/
++/dist/
+ # generated types
+ .astro/
+ 
