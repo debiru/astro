@@ -10,7 +10,7 @@ shopt -s dotglob
 BASE_URL="https://astro.debiru.net"
 
 function apply_patch() {
-  curl -fsSL "${BASE_URL}/patch/$1" | git apply --allow-empty --quiet
+  curl -fsSL "${BASE_URL}/build/patch/$1" | git apply --allow-empty --quiet
 }
 
 function git_commit_if() {
