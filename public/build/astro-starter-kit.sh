@@ -1,13 +1,19 @@
 #!/bin/bash
 
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 YOUR_DOMAIN_NAME";
+  exit 1
+fi
+
 if !(type npm > /dev/null 2>&1); then
   echo "Please install \`node\` and \`npm\` command."
-  exit
+  exit 1
 fi
 
 # 0. bash configure
 shopt -s dotglob
 BASE_URL="https://astro.debiru.net"
+DOMAIN_NAME="$1"
 
 function apply_patch() {
   curl -fsSL "${BASE_URL}/build/patch/$1" | git apply --allow-empty --quiet
@@ -50,6 +56,7 @@ git_commit_if "package.json" "update package.json"
 
 # 6. Prepare starter kit
 apply_patch "starter-kit.patch"
+perl -i -pe "s@site: '[^']+'@site: '${DOMAIN_NAME}'@smg" astro.config.mjs
 git_commit_ifs "public/favicon.ico" "generate starter kit"
 
 # 7. Generate package-lock.json
