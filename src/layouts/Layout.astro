@@ -5,7 +5,7 @@ app.init(Astro);
 ---
 
 <!DOCTYPE html>
-<html lang="ja" id={ args.path }>
+<html lang={ args.lang } id={ args.path }>
   <head>
     <meta charset="UTF-8" />
     <title>{ args.title }</title>
@@ -47,11 +47,11 @@ app.init(Astro);
       </header>
       <main id="page-main"><slot /></main>
       <footer id="page-footer">
-          <div class="content-inner">
-            <div class="footerArea">
-              <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt="Astro Site" width="30" height="30"> <span class="wbr">Powered by Astro</span></p>
-            </div>
+        <div class="content-inner">
+          <div class="footerArea">
+            <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt="Astro Site" width="30" height="30"> <span class="wbr">Powered by Astro</span></p>
           </div>
+        </div>
       </footer>
     </div>
   </body>
