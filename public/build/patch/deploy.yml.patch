@@ -23,7 +23,7 @@ index 0000000..9732556
 +      - name: Checkout your repository using git
 +        uses: actions/checkout@v4
 +      - name: Install, build, and upload your site
-+        uses: withastro/action@v1
++        uses: withastro/action@v3
 +        with:
 +          node-version: 22
 +          package-manager: npm@latest
@@ -37,4 +37,4 @@ index 0000000..9732556
 +    steps:
 +      - name: Deploy to GitHub Pages
 +        id: deployment
-+        uses: actions/deploy-pages@v1
++        uses: actions/deploy-pages@v4
