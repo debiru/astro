@@ -2,8 +2,7 @@ diff --git a/package.json b/package.json
 index 65e3364..9962f52 100644
 --- a/package.json
 +++ b/package.json
-@@ -4,11 +4,13 @@
-   "version": "0.0.1",
+@@ -4,6 +4,8 @@
    "scripts": {
      "dev": "astro dev",
 -    "build": "astro build",
@@ -13,9 +12,3 @@ index 65e3364..9962f52 100644
      "preview": "astro preview",
      "astro": "astro"
    },
-   "dependencies": {
-     "astro": "^5.1.10"
-   }
--}
-\ No newline at end of file
-+}
