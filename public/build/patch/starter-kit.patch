@@ -21096,11 +21096,10 @@ new file mode 100644
 index 0000000..3dc7e73
 --- /dev/null
 +++ b/src/layouts/Layout.astro
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,57 @@
 +---
 +import Util from '/src/config/Util';
-+import { app, args, assets, img, route } from '/src/config/view';
-+app.init(Astro);
++import { args, assets, img, route } from '/src/config/view';
 +---
 +
 +<!DOCTYPE html>
