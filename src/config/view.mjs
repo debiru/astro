@@ -21,7 +21,7 @@ export const app = {
     args.cssList = app.args.cssList ?? [];
     args.jsList = app.args.jsList ?? [];
     args.titlePrefix = app.args.title;
-    args.title = (args.titlePrefix != null ? args.titlePrefix + ' - ' : '') + args.siteName + ' | ' + args.titleSuffix;
+    args.title = (args.titlePrefix != null ? args.titlePrefix + ' - ' : '') + args.siteName + (args.titleSuffix != null ? ' | ' + args.titleSuffix : '');
     args.lang = 'ja';
     args.locale = 'ja_JP';
     args.og_type = args.path === '/' ? 'website' : 'article';
