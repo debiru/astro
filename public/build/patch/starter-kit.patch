@@ -21042,7 +21042,7 @@ new file mode 100644
 index 0000000..38eeae1
 --- /dev/null
 +++ b/src/config/view.mjs
-@@ -0,0 +1,45 @@
+@@ -0,0 +1,48 @@
 +import Util from '/src/config/Util';
 +
 +export const args = {
@@ -21060,6 +21060,9 @@ index 0000000..38eeae1
 +    args.domain = app.url.hostname;
 +    args.path = app.url.pathname.replace(/\.html$/, '');
 +    args.url = app.url.origin + args.path;
++    args.siteRootUrl = app.url.origin;
++    args.siteRootUrlWithoutProtocol = app.url.host;
++    args.urlWithoutProtocol = app.url.host + args.path;
 +    args.cssList = app.args.cssList ?? [];
 +    args.jsList = app.args.jsList ?? [];
 +    args.titlePrefix = app.args.title;
