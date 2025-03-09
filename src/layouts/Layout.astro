@@ -33,9 +33,9 @@ app.init(Astro);
     <script src={ assets('js/global/base.js', true) }></script>{
       (args.cssList.length > 0 || args.jsList.length > 0) && '\n'
     }{
-      args.cssList.map(css => <Fragment set:html={Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true))} />)
+      args.cssList.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
     }{
-      args.jsList.map(js => <Fragment set:html={Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true))} />)
+      args.jsList.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
     }
   </head>
   <body>
