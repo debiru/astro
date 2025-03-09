@@ -7,9 +7,10 @@ const pageArgs = {
   cssList: ['subpage/style.css'],
   jsList: ['subpage/script.js'],
 };
+app.init(Astro, pageArgs);
 ---
 
-<Layout args={pageArgs}>
+<Layout>
   <div class="content-inner">
     <h1>Subpage</h1>
   </div>

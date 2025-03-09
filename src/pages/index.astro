@@ -5,9 +5,10 @@ import { app, args, assets, img, route } from '/src/config/view';
 const pageArgs = {};
 const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
 const starterKitContent = await fetch(starterKitUrl).then(response => response.text());
+app.init(Astro, pageArgs);
 ---
 
-<Layout args={pageArgs}>
+<Layout>
   <div class="content-inner">
     <h1>Welcome to Astro Site</h1>
     <p><a href={ route('/subpage') }>Subpage</a></p>
