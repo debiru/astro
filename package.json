@@ -4,20 +4,20 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "build/build.sh && astro build",
+    "build": "build/pre-build.sh && astro build && build/post-build.sh",
     "watch": "build/watch.sh",
     "stylelint": "build/stylelint.sh",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.4.0"
+    "astro": "^5.11.0"
   },
   "devDependencies": {
-    "glob": "^11.0.1",
-    "js-beautify": "^1.15.1",
-    "sass": "^1.83.4",
-    "stylelint": "^16.14.1",
-    "stylelint-config-standard": "^37.0.0"
+    "glob": "^11.0.3",
+    "js-beautify": "^1.15.4",
+    "sass": "^1.89.2",
+    "stylelint": "^16.21.1",
+    "stylelint-config-standard": "^38.0.0"
   }
 }

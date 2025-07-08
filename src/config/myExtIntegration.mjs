@@ -1,6 +1,8 @@
 import fs from 'fs';
+import path from 'path';
 import { globSync } from 'glob';
 import beautify from 'js-beautify';
+import { app, args, pages } from '/src/config/view';
 
 function htmlFormatter(filePath) {
   const config = {
@@ -19,11 +21,22 @@ function htmlFormatter(filePath) {
   fs.writeFileSync(filePath, outputHtml);
 }
 
+function exportAstroConfigJson(projectDir) {
+  const filePath = path.join(projectDir, 'astro.json');
+  app.init();
+  const obj = { args, pages };
+  const json = JSON.stringify(obj, null, 2) + '\n';
+  fs.writeFileSync(filePath, json);
+}
+
 export default function() {
   return {
     name: 'myExt:integration',
     hooks: {
       'astro:build:generated': (options) => {
+        const projectDir = path.dirname(options.dir.pathname);
+        exportAstroConfigJson(projectDir);
+
         globSync(`${options.dir.pathname}**/*.html`).forEach((filePath) => {
           htmlFormatter(filePath);
         });

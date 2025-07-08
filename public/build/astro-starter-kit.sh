@@ -52,7 +52,6 @@ git_commit_ifs "src/" "remove default src files"
 
 # 5. Update package.json
 apply_patch "package.json.patch"
-[ $(tail -n1 "package.json" | wc -l) = "0" ] && echo "" >> "package.json"
 git_commit_if "package.json" "update package.json"
 
 # 6. Prepare starter kit

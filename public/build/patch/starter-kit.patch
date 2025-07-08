@@ -3,24 +3,26 @@ new file mode 100644
 index 0000000..3832116
 --- /dev/null
 +++ b/.stylelintrc.json
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,20 @@
 +{
-+    "extends": "stylelint-config-standard",
-+    "rules": {
-+        "alpha-value-notation": null,
-+        "at-rule-empty-line-before": null,
-+        "custom-property-pattern": null,
-+        "declaration-block-no-redundant-longhand-properties": null,
-+        "no-descending-specificity": null,
-+        "no-duplicate-selectors": null,
-+        "no-empty-source": null,
-+        "property-no-vendor-prefix": null,
-+        "selector-class-pattern": null,
-+        "selector-id-pattern": null,
-+        "rule-empty-line-before": null,
-+        "selector-attribute-quotes": null,
-+        "value-keyword-case": null
-+    }
++  "extends": "stylelint-config-standard",
++  "rules": {
++    "alpha-value-notation": null,
++    "at-rule-empty-line-before": null,
++    "comment-empty-line-before": null,
++    "custom-property-pattern": null,
++    "declaration-block-no-redundant-longhand-properties": null,
++    "declaration-empty-line-before": null,
++    "no-descending-specificity": null,
++    "no-duplicate-selectors": null,
++    "no-empty-source": null,
++    "property-no-vendor-prefix": null,
++    "selector-class-pattern": null,
++    "selector-id-pattern": null,
++    "rule-empty-line-before": null,
++    "selector-attribute-quotes": null,
++    "value-keyword-case": null
++  }
 +}
 diff --git a/astro.config.mjs b/astro.config.mjs
 index e762ba5..f333444 100644
@@ -30,24 +32,24 @@ index e762ba5..f333444 100644
 -// @ts-check
  import { defineConfig } from 'astro/config';
 +import myExtIntegration from '/src/config/myExtIntegration';
- 
+
 -// https://astro.build/config
 -export default defineConfig({});
 +// refs. https://astro.build/config
 +export default defineConfig({
 +  site: 'https://astro.debiru.net',
-+  trailingSlash: 'ignore',
++  trailingSlash: 'always',
 +  compressHTML: false,
 +  integrations: [myExtIntegration()],
 +  build: {
-+    format: 'file',
++    format: 'directory',
 +  },
 +});
-diff --git a/build/build.sh b/build/build.sh
+diff --git a/build/pre-build.sh b/build/pre-build.sh
 new file mode 100755
 index 0000000..7a7be25
 --- /dev/null
-+++ b/build/build.sh
++++ b/build/pre-build.sh
 @@ -0,0 +1,6 @@
 +#!/bin/bash
 +
@@ -55,6 +57,15 @@ index 0000000..7a7be25
 +
 +./sass-compile.sh
 +./stylelint.sh
+diff --git a/build/post-build.sh b/build/post-build.sh
+new file mode 100755
+index 0000000..7a7be25
+--- /dev/null
++++ b/build/post-build.sh
+@@ -0,0 +1,3 @@
++#!/bin/bash
++
++cd $(dirname $0)/..
 diff --git a/build/sass-compile.sh b/build/sass-compile.sh
 new file mode 100755
 index 0000000..dc59db8
@@ -105,7 +116,7 @@ index 0000000..3423ea6
 +
 +cd $(dirname $0)
 +
-+./build.sh
++./pre-build.sh
 +./sass-watch.sh
 diff --git a/public/assets/css/global/reset.css b/public/assets/css/global/reset.css
 new file mode 100644
@@ -20962,8 +20973,36 @@ new file mode 100644
 index 0000000..9405025
 --- /dev/null
 +++ b/src/config/Util.mjs
-@@ -0,0 +1,35 @@
+@@ -0,0 +1,71 @@
++import fs from 'fs';
++
 +const Util = {
++  fs: {
++    basePath(path) {
++      return process.cwd() + '/' + Util.ltrim(path);
++    },
++    exist(path) {
++      path = Util.fs.basePath(path);
++      let isExist = false;
++      try {
++        const stat = fs.statSync(path);
++        isExist = stat.isFile();
++      } catch {}
++      return isExist;
++    },
++    getComponents(filePath) {
++      const content = fs.readFileSync(filePath, { encoding: 'utf8' });
++      const matches = Array.from(content.matchAll(/^import\s*{?([^}]*)}?\s*from\s*['"]\/src\/components\b/mg));
++      const components = [];
++      matches.forEach((match) => {
++        let str = match[1];
++        str = str.replaceAll(/as\s+\w+/g, '');
++        str = str.replaceAll(/\s+/g, '');
++        Util.concat(components, str.split(','));
++      });
++      return components;
++    },
++  },
 +  HTML: {
 +    escape(str) {
 +      const map = {
@@ -20995,6 +21034,14 @@ index 0000000..9405025
 +  rtrim(str, char = '/') {
 +    return str.replaceAll(new RegExp(Util.sprintf('[%s]+$', Util.RegExp.escape(char)), 'g'), '');
 +  },
++  Array(length) {
++    const array = [];
++    for (let i = 0; i < length; ++i) array.push(i + 1);
++    return array;
++  },
++  concat(arrayA, arrayB) {
++    Array.prototype.push.apply(arrayA, arrayB);
++  },
 +};
 +
 +export default Util;
@@ -21003,10 +21050,12 @@ new file mode 100644
 index 0000000..0ec965a
 --- /dev/null
 +++ b/src/config/myExtIntegration.mjs
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,46 @@
 +import fs from 'fs';
++import path from 'path';
 +import { globSync } from 'glob';
 +import beautify from 'js-beautify';
++import { app, args, pages } from '/src/config/view';
 +
 +function htmlFormatter(filePath) {
 +  const config = {
@@ -21025,11 +21074,22 @@ index 0000000..0ec965a
 +  fs.writeFileSync(filePath, outputHtml);
 +}
 +
++function exportAstroConfigJson(projectDir) {
++  const filePath = path.join(projectDir, 'astro.json');
++  app.init();
++  const obj = { args, pages };
++  const json = JSON.stringify(obj, null, 2) + '\n';
++  fs.writeFileSync(filePath, json);
++}
++
 +export default function() {
 +  return {
 +    name: 'myExt:integration',
 +    hooks: {
 +      'astro:build:generated': (options) => {
++        const projectDir = path.dirname(options.dir.pathname);
++        exportAstroConfigJson(projectDir);
++
 +        globSync(`${options.dir.pathname}**/*.html`).forEach((filePath) => {
 +          htmlFormatter(filePath);
 +        });
@@ -21042,40 +21102,73 @@ new file mode 100644
 index 0000000..38eeae1
 --- /dev/null
 +++ b/src/config/view.mjs
-@@ -0,0 +1,48 @@
+@@ -0,0 +1,85 @@
 +import Util from '/src/config/Util';
 +
-+export const args = {
-+  siteName: 'Astro Site',
-+  titleSuffix: 'Generated by astro.debiru.net',
-+  description: 'Astro Site Starter Kit',
-+  twitter: '@YOUR_TWITTER_ID',
-+};
-+
++export const args = {};
++export const pages = {};
 +export const app = {
-+  init(Astro, pageArgs) {
++  setPages() {
++    app.makePage('top', '/', 'Top');
++    app.makePage('subpage', '/subpage', 'Subpage');
++  },
++  preInit() {
++    args.siteName = 'Astro Site';
++    args.titleSuffix = 'Generated by astro.debiru.net';
++    args.description = 'Astro Site Starter Kit';
++    args.twitter = '@YOUR_TWITTER_ID';
++    args.lang = 'ja';
++    args.locale = 'ja_JP';
++    args.og_image = 'img/global/og.png';
++  },
++  postInit(Astro, pageArgs) {
 +    app.Astro = Astro;
 +    app.args = pageArgs ?? {};
 +    app.url = Astro.url;
 +    args.domain = app.url.hostname;
 +    args.path = app.url.pathname.replace(/\.html$/, '');
++    const selfRoute = route(args.path);
++    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
++    args.page.useComponents = Util.fs.getComponents(Astro.self.moduleId);
 +    args.url = app.url.origin + args.path;
 +    args.siteRootUrl = app.url.origin;
 +    args.siteRootUrlWithoutProtocol = app.url.host;
 +    args.urlWithoutProtocol = app.url.host + args.path;
-+    args.cssList = app.args.cssList ?? [];
-+    args.jsList = app.args.jsList ?? [];
++    args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
++      const value = [];
++      const willAdd = (dir, file) => {
++        const path = Util.sprintf('%s/%s.%s', dir, file, ext);
++        const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
++        if (fileExist) value.push(path);
++      };
++      if (args.page.key) willAdd('pages', args.page.key);
++      args.page.useComponents.forEach((componentName) => {
++        willAdd('components', componentName);
++      });
++      return [ext, value];
++    }));
 +    args.titlePrefix = app.args.title;
 +    args.title = (args.titlePrefix != null ? args.titlePrefix + ' - ' : '') + args.siteName + (args.titleSuffix != null ? ' | ' + args.titleSuffix : '');
-+    args.lang = 'ja';
-+    args.locale = 'ja_JP';
 +    args.og_type = args.path === '/' ? 'website' : 'article';
-+    args.og_image = assetsUrl('img/global/og.png', true);
++    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
++  },
++  makePage(key, argRoute, label) {
++    pages[key] = { key, route: route(argRoute), label };
++  },
++  init(Astro, pageArgs) {
++    app.setPages();
++    app.preInit();
++    if (Astro) app.postInit(Astro, pageArgs);
 +  },
 +};
 +
++export const rootPath = (path) => {
++  path = '/' + Util.ltrim(path);
++  return path;
++};
++
 +export const assets = (path, cacheBuster = false) => {
-+  path = '/assets/' + Util.ltrim(path);
++  path = rootPath('assets/' + Util.ltrim(path));
 +  if (cacheBuster) path += '?' + Date.now();
 +  return path;
 +};
@@ -21084,94 +21177,128 @@ index 0000000..38eeae1
 +  return Util.rtrim(app.url.origin) + assets(path, cacheBuster);
 +};
 +
++export const isAbsUrl = (url) => {
++  return /^(?:\w+:)?\/\//.test(url);
++};
++
 +export const img = (path) => {
 +  return assets('img/' + Util.ltrim(path));
 +};
 +
 +export const route = (path) => {
-+  return '/' + Util.ltrim(path);
++  return Util.rtrim(rootPath(String(path))) + '/';
 +};
 diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
 new file mode 100644
 index 0000000..3dc7e73
 --- /dev/null
 +++ b/src/layouts/Layout.astro
-@@ -0,0 +1,57 @@
+@@ -0,0 +1,49 @@
 +---
++import Header from '/src/layouts/Header.astro';
++import Footer from '/src/layouts/Footer.astro';
 +import Util from '/src/config/Util';
-+import { args, assets, img, route } from '/src/config/view';
++import { args, assets, img } from '/src/config/view';
 +---
 +
 +<!DOCTYPE html>
-+<html lang={ args.lang } id={ args.path }>
++<html lang={ args.lang } data-app-path={ args.path } data-key={ args.page.key } data-route={ args.page.route }>
 +  <head>
 +    <meta charset="UTF-8" />
 +    <title>{ args.title }</title>
-+    <meta name="description" content={ args.description }>
++    <meta name="description" content={ args.description } />
 +
 +    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 +    <meta name="format-detection" content="telephone=no, email=no, address=no" />
-+    <meta name="generator" content={ Astro.generator }>
++    <meta name="generator" content={ Astro.generator } />
 +
-+    <meta property="og:locale" content={ args.locale }>
-+    <meta property="og:type" content={ args.og_type }>
-+    <meta property="og:site_name" content={ args.siteName }>
-+    <meta property="og:title" content={ args.title }>
-+    <meta property="og:description" content={ args.description }>
-+    <meta property="og:image" content={ args.og_image }>
-+    <meta property="og:url" content={ args.url }>
++    <meta property="og:locale" content={ args.locale } />
++    <meta property="og:type" content={ args.og_type } />
++    <meta property="og:site_name" content={ args.siteName } />
++    <meta property="og:title" content={ args.title } />
++    <meta property="og:description" content={ args.description } />
++    <meta property="og:image" content={ args.og_image } />
++    <meta property="og:url" content={ args.url } />
 +
-+    <meta name="twitter:card" content="summary_large_image">
-+    <meta name="twitter:title" content={ args.title }>
-+    <meta name="twitter:description" content={ args.description }>
-+    <meta name="twitter:site" content={ args.twitter }>
++    <meta name="twitter:card" content="summary_large_image" />
++    <meta name="twitter:title" content={ args.title } />
++    <meta name="twitter:description" content={ args.description } />
++    <meta name="twitter:site" content={ args.twitter } />
 +
-+    <link rel="stylesheet" href={ assets('css/global/reset.css', true) }>
-+    <link rel="stylesheet" href={ assets('css/global/style.css', true) }>
++    <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
++    <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
 +    <script src={ assets('js/global/base.js', true) }></script>{
-+      (args.cssList.length > 0 || args.jsList.length > 0) && '\n'
++      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n'
 +    }{
-+      args.cssList.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
++      args.assetList.css.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
 +    }{
-+      args.jsList.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
++      args.assetList.js.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
 +    }
 +  </head>
 +  <body>
 +    <div id="page-container">
-+      <header id="page-header">
-+        <div class="content-inner">
-+          <h1 class="siteName"><a href={ route('/') }><img src={ img('global/logo.png') } alt="Astro Site" width="100" height="100"></a></h1>
-+        </div>
-+      </header>
++      <header id="page-header"><Header /></header>
 +      <main id="page-main"><slot /></main>
-+      <footer id="page-footer">
-+        <div class="content-inner">
-+          <div class="footerArea">
-+            <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt="Astro Site" width="30" height="30"> <span class="wbr">Powered by Astro</span></p>
-+          </div>
-+        </div>
-+      </footer>
++      <footer id="page-footer"><Footer /></footer>
 +    </div>
 +  </body>
 +</html>
+diff --git a/src/layouts/Header.astro b/src/layouts/Header.astro
+new file mode 100644
+index 0000000..3dc7e73
+--- /dev/null
++++ b/src/layouts/Header.astro
+@@ -0,0 +1,9 @@
++---
++import { args, pages, img } from '/src/config/view';
++---
++
++<header id="page-header">
++  <div class="content-inner">
++    <h1 class="siteName"><a href={ pages.top.route }><img src={ img('global/logo.png') } alt="Astro Site" width="100" height="100"></a></h1>
++  </div>
++</header>
+diff --git a/src/layouts/Footer.astro b/src/layouts/Footer.astro
+new file mode 100644
+index 0000000..3dc7e73
+--- /dev/null
++++ b/src/layouts/Footer.astro
+@@ -0,0 +1,11 @@
++---
++import { args, pages, img } from "/src/config/view";
++---
++
++<footer id="page-footer">
++  <div class="content-inner">
++    <div class="footerArea">
++      <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt="Astro Site" width="30" height="30"> <span class="wbr">Powered by Astro</span></p>
++    </div>
++  </div>
++</footer>
 diff --git a/src/pages/index.astro b/src/pages/index.astro
 new file mode 100644
 index 0000000..624aae9
 --- /dev/null
 +++ b/src/pages/index.astro
-@@ -0,0 +1,14 @@
+@@ -0,0 +1,20 @@
 +---
 +import Layout from '/src/layouts/Layout.astro';
 +import Util from '/src/config/Util';
-+import { app, args, assets, img, route } from '/src/config/view';
++import { app, args, pages, assets, img } from '/src/config/view';
 +const pageArgs = {};
 +app.init(Astro, pageArgs);
++const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
++const starterKitContent = await fetch(starterKitUrl).then(response => response.text());
 +---
 +
 +<Layout>
 +  <div class="content-inner">
 +    <h1>Welcome to Astro Site</h1>
-+    <p class="sample-link"><a href={ route('/subpage') }>Subpage</a></p>
++    <p><a href={ pages.subpage.route }>Subpage</a></p>
++    <h1>Astro Starter Kit</h1>
++    <p><a href={ starterKitUrl }>{ starterKitUrl }</a></p>
++    <p><a href="https://qiita.com/debiru/items/a5ac8219b696045f88f5" target="_blank">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</a></p>
++    <pre>{ starterKitContent }</pre>
 +  </div>
 +</Layout>
 diff --git a/src/pages/subpage/index.astro b/src/pages/subpage/index.astro
@@ -21179,15 +21306,13 @@ new file mode 100644
 index 0000000..e474d31
 --- /dev/null
 +++ b/src/pages/subpage/index.astro
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,15 @@
 +---
 +import Layout from '/src/layouts/Layout.astro';
 +import Util from '/src/config/Util';
-+import { app, args, assets, img, route } from '/src/config/view';
++import { app, args, pages, assets, img } from '/src/config/view';
 +const pageArgs = {
 +  title: 'Subpage Title',
-+  cssList: ['subpage/style.css'],
-+  jsList: ['subpage/script.js'],
 +};
 +app.init(Astro, pageArgs);
 +---

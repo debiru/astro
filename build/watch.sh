@@ -2,5 +2,5 @@
 
 cd $(dirname $0)
 
-./build.sh
+./pre-build.sh
 ./sass-watch.sh
