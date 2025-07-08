@@ -71,7 +71,7 @@ new file mode 100755
 index 0000000..dc59db8
 --- /dev/null
 +++ b/build/sass-compile.sh
-@@ -0,0 +1,9 @@
+@@ -0,0 +1,10 @@
 +#!/bin/bash
 +
 +cd $(dirname $0)/..
@@ -79,6 +79,7 @@ index 0000000..dc59db8
 +CSS_DIR="public/assets/css"
 +SCSS_DIR="public/assets/scss"
 +
++touch "${CSS_DIR}"
 +rm -r "${CSS_DIR}"
 +npx sass --no-source-map "${SCSS_DIR}:${CSS_DIR}"
 diff --git a/build/sass-watch.sh b/build/sass-watch.sh
@@ -118,187 +119,6 @@ index 0000000..3423ea6
 +
 +./pre-build.sh
 +./sass-watch.sh
-diff --git a/public/assets/css/global/reset.css b/public/assets/css/global/reset.css
-new file mode 100644
-index 0000000..bca856a
---- /dev/null
-+++ b/public/assets/css/global/reset.css
-@@ -0,0 +1,98 @@
-+html, body, div, span, applet, object, iframe,
-+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-+a, abbr, acronym, address, big, cite, code,
-+del, dfn, em, img, ins, kbd, q, s, samp,
-+small, strike, strong, sub, sup, tt, var,
-+b, u, i, center,
-+dl, dt, dd, ol, ul, li,
-+fieldset, form, label, legend,
-+table, caption, tbody, tfoot, thead, tr, th, td,
-+article, aside, canvas, details, embed,
-+figure, figcaption, footer, header, hgroup,
-+menu, nav, output, ruby, section, summary,
-+time, mark, audio, video {
-+  margin: 0;
-+  padding: 0;
-+  border: 0;
-+  font: inherit;
-+  font-size: 100%;
-+  vertical-align: baseline;
-+}
-+
-+html {
-+  line-height: 1;
-+}
-+
-+ol, ul {
-+  list-style: none;
-+}
-+
-+table {
-+  border-collapse: separate;
-+  border-spacing: 0;
-+}
-+
-+caption, th, td {
-+  text-align: left;
-+  font-weight: normal;
-+  vertical-align: middle;
-+}
-+
-+q, blockquote {
-+  quotes: none;
-+}
-+
-+q::before, q::after, blockquote::before, blockquote::after {
-+  content: "";
-+  content: none;
-+}
-+
-+a img {
-+  border: none;
-+}
-+
-+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
-+  display: block;
-+}
-+
-+sup, sub {
-+  font-size: 75%;
-+}
-+
-+sup {
-+  vertical-align: super;
-+}
-+
-+sub {
-+  vertical-align: sub;
-+}
-+
-+textarea, pre {
-+  font-family: monospace;
-+}
-+
-+b, strong {
-+  font-weight: bold;
-+}
-+
-+i, em {
-+  font-style: italic;
-+}
-+
-+hr {
-+  margin: 0;
-+  padding: 0;
-+  border: 0;
-+}
-+
-+select {
-+  font-size: 100%;
-+}
-+
-+img, iframe, video {
-+  vertical-align: top;
-+}
-+
-+button {
-+  cursor: pointer;
-+}
-diff --git a/public/assets/css/global/style.css b/public/assets/css/global/style.css
-new file mode 100644
-index 0000000..2babb3d
---- /dev/null
-+++ b/public/assets/css/global/style.css
-@@ -0,0 +1,64 @@
-+html {
-+  scroll-behavior: smooth;
-+  font-size: 62.5%;
-+}
-+
-+body {
-+  -webkit-text-size-adjust: 100%;
-+  font-size: 1.6rem;
-+}
-+
-+.wbr {
-+  display: inline-block;
-+}
-+
-+.content-inner {
-+  max-width: 1080px;
-+  margin-inline: auto;
-+  padding-inline: 10px;
-+}
-+
-+#page-container {
-+  display: grid;
-+  grid-template-rows: auto 1fr auto;
-+  grid-template-columns: 100%;
-+  min-width: 100dvw;
-+  min-height: 100dvh;
-+}
-+
-+#page-header .content-inner {
-+  border-bottom: 1px solid #ccc;
-+}
-+#page-header .siteName {
-+  padding-block: 8px;
-+}
-+
-+#page-main {
-+  text-align: center;
-+}
-+#page-main .content-inner > * {
-+  margin-top: 30px;
-+}
-+#page-main h1 {
-+  font-family: serif;
-+  font-weight: bold;
-+  font-size: 3.2rem;
-+}
-+
-+#page-footer {
-+  border-top: 1px solid #999;
-+  background: #f0f0f0;
-+}
-+#page-footer .footerArea {
-+  padding: 4px 8px 8px;
-+}
-+#page-footer .footerArea .copyright {
-+  padding-top: 4px;
-+  text-align: center;
-+  font-family: Verdana, sans-serif;
-+  font-size: 1.4rem;
-+}
-+#page-footer .footerArea .copyright img {
-+  margin-top: -4px;
-+  vertical-align: middle;
-+}
-diff --git a/public/assets/css/subpage/style.css b/public/assets/css/subpage/style.css
-new file mode 100644
-index 0000000..8b13789
---- /dev/null
-+++ b/public/assets/css/subpage/style.css
-@@ -0,0 +1 @@
-+
 diff --git a/public/assets/img/global/logo.png b/public/assets/img/global/logo.png
 new file mode 100644
 index 0000000000000000000000000000000000000000..b6bbfcfa13b916b62be8188aac951ea03d2c201d
@@ -20276,11 +20096,20 @@ index 0000000..bedd521
 +(function() {
 +  'use strict';
 +})();
-diff --git a/public/assets/js/subpage/script.js b/public/assets/js/subpage/script.js
+diff --git a/public/assets/js/pages/top.js b/public/assets/js/pages/top.js
 new file mode 100644
 index 0000000..bedd521
 --- /dev/null
-+++ b/public/assets/js/subpage/script.js
++++ b/public/assets/js/pages/top.js
+@@ -0,0 +1,3 @@
++(function() {
++  'use strict';
++})();
+diff --git a/public/assets/js/pages/subpage.js b/public/assets/js/pages/subpage.js
+new file mode 100644
+index 0000000..bedd521
+--- /dev/null
++++ b/public/assets/js/pages/subpage.js
 @@ -0,0 +1,3 @@
 +(function() {
 +  'use strict';
@@ -20394,7 +20223,7 @@ new file mode 100644
 index 0000000..fd8f696
 --- /dev/null
 +++ b/public/assets/scss/global/style.scss
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,81 @@
 +html {
 +  scroll-behavior: smooth;
 +  font-size: 62.5%;
@@ -20433,6 +20262,7 @@ index 0000000..fd8f696
 +}
 +
 +#page-main {
++  padding-bottom: 50px;
 +  text-align: center;
 +
 +  .content-inner {
@@ -20445,6 +20275,13 @@ index 0000000..fd8f696
 +    font-family: serif;
 +    font-weight: bold;
 +    font-size: 3.2rem;
++  }
++  pre {
++    overflow: auto;
++    padding: 8px;
++    border: 1px solid #090;
++    background: #cfc;
++    text-align: left;
 +  }
 +}
 +
@@ -20468,9 +20305,20 @@ index 0000000..fd8f696
 +    }
 +  }
 +}
-diff --git a/public/assets/scss/subpage/style.scss b/public/assets/scss/subpage/style.scss
+diff --git a/public/assets/scss/pages/top.scss b/public/assets/scss/pages/top.scss
 new file mode 100644
-index 0000000..e69de29
+index 0000000..fd8f696
+--- /dev/null
++++ b/public/assets/scss/pages/top.scss
+@@ -0,0 +1,1 @@
++
+diff --git a/public/assets/scss/pages/subpage.scss b/public/assets/scss/pages/subpage.scss
+new file mode 100644
+index 0000000..fd8f696
+--- /dev/null
++++ b/public/assets/scss/pages/subpage.scss
+@@ -0,0 +1,1 @@
++
 diff --git a/public/favicon.ico b/public/favicon.ico
 new file mode 100644
 index 0000000000000000000000000000000000000000..c35fc5f4188b82c7535347cfee01d91d6fddf6d3
