@@ -5,7 +5,7 @@ import { app, args, pages, assets, img } from '/src/config/view';
 const pageArgs = {};
 app.init(Astro, pageArgs);
 const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
-const starterKitContent = await fetch(starterKitUrl).then(response => response.text());
+const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then(response => response.text());
 ---
 
 <Layout>
