@@ -63,3 +63,7 @@ git_commit_ifs "public/favicon.ico" "generate starter kit"
 # 7. Generate package-lock.json
 npm install -D glob js-beautify sass stylelint stylelint-config-standard
 git_commit_ifs "package-lock.json" "npm install"
+
+# 8. Build
+npm run build
+git_commit_ifs "astro.json" "npm run build"
