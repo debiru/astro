@@ -1,4 +1,5 @@
 ---
+import { Link } from '/src/components';
 import Layout from '/src/layouts/Layout.astro';
 import Util from '/src/config/Util';
 import { app, args, pages, assets, img } from '/src/config/view';
@@ -11,10 +12,10 @@ const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then
 <Layout>
   <div class="content-inner">
     <h1>Welcome to Astro Site</h1>
-    <p><a href={ pages.subpage.route }>Subpage</a></p>
+    <p><Link url={ pages.subpage.route } label={ pages.subpage.label } /></p>
     <h1>Astro Starter Kit</h1>
-    <p><a href={ starterKitUrl }>{ starterKitUrl }</a></p>
-    <p><a href="https://qiita.com/debiru/items/a5ac8219b696045f88f5" target="_blank">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</a></p>
+    <p><Link url="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
+    <p><Link url="https://qiita.com/debiru/items/a5ac8219b696045f88f5" label="10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ" /></p>
     <pre>{ starterKitContent }</pre>
   </div>
 </Layout>

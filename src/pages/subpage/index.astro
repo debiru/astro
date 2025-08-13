@@ -1,15 +1,17 @@
 ---
+import { Link } from '/src/components';
 import Layout from '/src/layouts/Layout.astro';
 import Util from '/src/config/Util';
 import { app, args, pages, assets, img } from '/src/config/view';
 const pageArgs = {
-  title: 'Subpage Title',
+  title: 'Sub page Title',
 };
 app.init(Astro, pageArgs);
 ---
 
 <Layout>
   <div class="content-inner">
-    <h1>Subpage</h1>
+    <h1>Sub page</h1>
+    <p><Link url={ pages.top.route } label={ pages.top.label } /></p>
   </div>
 </Layout>
