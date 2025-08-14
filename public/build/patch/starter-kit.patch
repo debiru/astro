@@ -20369,6 +20369,14 @@ index 0000000..fd8f696
 +++ b/public/assets/scss/pages/subpage.scss
 @@ -0,0 +1,1 @@
 +
+diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
+new file mode 100644
+index 0000000..e69de29
+index 0000000..fd8f696
+--- /dev/null
++++ b/public/assets/scss/components/Link.scss
+@@ -0,0 +1,0 @@
++
 diff --git a/public/favicon.ico b/public/favicon.ico
 new file mode 100644
 index 0000000000000000000000000000000000000000..c35fc5f4188b82c7535347cfee01d91d6fddf6d3
