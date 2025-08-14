@@ -20374,7 +20374,7 @@ new file mode 100644
 index 0000000..fd8f696
 --- /dev/null
 +++ b/public/assets/scss/components/Link.scss
-@@ -0,0 +1,0 @@
+@@ -0,0 +1,1 @@
 +
 diff --git a/public/favicon.ico b/public/favicon.ico
 new file mode 100644
