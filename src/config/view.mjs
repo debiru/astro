@@ -19,16 +19,32 @@ export const app = {
   postInit(Astro, pageArgs) {
     app.Astro = Astro;
     app.args = pageArgs ?? {};
-    app.url = Astro.url;
+
+    // Overwrite args parameters
+    Object.entries(app.args).forEach(([key, value]) => {
+      args[key] = value;
+    });
+    // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
+    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
+
+    args.og_type = args.path === '/' ? 'website' : 'article';
+    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
+
+    app.autoConfig();
+  },
+  autoConfig() {
+    app.url = app.Astro.url;
     args.domain = app.url.hostname;
     args.path = app.url.pathname.replace(/\.html$/, '');
-    const selfRoute = route(args.path);
-    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
-    args.page.useComponents = Util.fs.getComponents(Astro.self.moduleId);
     args.url = app.url.origin + args.path;
     args.siteRootUrl = app.url.origin;
     args.siteRootUrlWithoutProtocol = app.url.host;
     args.urlWithoutProtocol = app.url.host + args.path;
+
+    const selfRoute = route(args.path);
+    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
+    args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
+
     args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
       const value = [];
       const willAdd = (dir, file) => {
@@ -42,10 +58,6 @@ export const app = {
       });
       return [ext, value];
     }));
-    args.titlePrefix = app.args.title;
-    args.title = (args.titlePrefix != null ? args.titlePrefix + ' - ' : '') + args.siteName + (args.titleSuffix != null ? ' | ' + args.titleSuffix : '');
-    args.og_type = args.path === '/' ? 'website' : 'article';
-    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
   },
   makePage(key, argRoute, label) {
     pages[key] = { key, route: route(argRoute), label };
@@ -69,7 +81,7 @@ export const assets = (path, cacheBuster = false) => {
 };
 
 export const assetsUrl = (path, cacheBuster = false) => {
-  return Util.rtrim(app.url.origin) + assets(path, cacheBuster);
+  return Util.rtrim(app.Astro.url.origin) + assets(path, cacheBuster);
 };
 
 export const isAbsUrl = (url) => {

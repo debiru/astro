@@ -20155,6 +20155,15 @@ index 0000000..bedd521
 +(function() {
 +  'use strict';
 +})();
+diff --git a/public/assets/js/components/Link.js b/public/assets/js/components/Link.js
+new file mode 100644
+index 0000000..bedd521
+--- /dev/null
++++ b/public/assets/js/components/Link.js
+@@ -0,0 +1,3 @@
++(function() {
++  'use strict';
++})();
 diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
 new file mode 100644
 index 0000000..bca856a
@@ -20862,7 +20871,7 @@ new file mode 100644
 index 0000000..9405025
 --- /dev/null
 +++ b/src/config/Util.mjs
-@@ -0,0 +1,71 @@
+@@ -0,0 +1,77 @@
 +import fs from 'fs';
 +
 +const Util = {
@@ -20909,6 +20918,12 @@ index 0000000..9405025
 +      return str.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
 +    },
 +  },
++  concatStr(str, params) {
++    if (str == null || str === '') return '';
++    if (params.prefix != null) str = params.prefix + str;
++    if (params.suffix != null) str = str + params.suffix;
++    return str;
++  },
 +  sprintf(format, ...args) {
 +    let p = 0;
 +    return format.replace(/%./g, function(m) {
@@ -20929,7 +20944,7 @@ index 0000000..9405025
 +    return array;
 +  },
 +  concat(arrayA, arrayB) {
-+    Array.prototype.push.apply(arrayA, arrayB);
++    arrayA.push(...arrayB);
 +  },
 +};
 +
@@ -20991,7 +21006,7 @@ new file mode 100644
 index 0000000..38eeae1
 --- /dev/null
 +++ b/src/config/view.mjs
-@@ -0,0 +1,85 @@
+@@ -0,0 +1,97 @@
 +import Util from '/src/config/Util';
 +
 +export const args = {};
@@ -21013,16 +21028,32 @@ index 0000000..38eeae1
 +  postInit(Astro, pageArgs) {
 +    app.Astro = Astro;
 +    app.args = pageArgs ?? {};
-+    app.url = Astro.url;
++
++    // Overwrite args parameters
++    Object.entries(app.args).forEach(([key, value]) => {
++      args[key] = value;
++    });
++    // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
++    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
++
++    args.og_type = args.path === '/' ? 'website' : 'article';
++    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
++
++    app.autoConfig();
++  },
++  autoConfig() {
++    app.url = app.Astro.url;
 +    args.domain = app.url.hostname;
 +    args.path = app.url.pathname.replace(/\.html$/, '');
-+    const selfRoute = route(args.path);
-+    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
-+    args.page.useComponents = Util.fs.getComponents(Astro.self.moduleId);
 +    args.url = app.url.origin + args.path;
 +    args.siteRootUrl = app.url.origin;
 +    args.siteRootUrlWithoutProtocol = app.url.host;
 +    args.urlWithoutProtocol = app.url.host + args.path;
++
++    const selfRoute = route(args.path);
++    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
++    args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
++
 +    args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
 +      const value = [];
 +      const willAdd = (dir, file) => {
@@ -21036,10 +21067,6 @@ index 0000000..38eeae1
 +      });
 +      return [ext, value];
 +    }));
-+    args.titlePrefix = app.args.title;
-+    args.title = (args.titlePrefix != null ? args.titlePrefix + ' - ' : '') + args.siteName + (args.titleSuffix != null ? ' | ' + args.titleSuffix : '');
-+    args.og_type = args.path === '/' ? 'website' : 'article';
-+    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
 +  },
 +  makePage(key, argRoute, label) {
 +    pages[key] = { key, route: route(argRoute), label };
@@ -21063,7 +21090,7 @@ index 0000000..38eeae1
 +};
 +
 +export const assetsUrl = (path, cacheBuster = false) => {
-+  return Util.rtrim(app.url.origin) + assets(path, cacheBuster);
++  return Util.rtrim(app.Astro.url.origin) + assets(path, cacheBuster);
 +};
 +
 +export const isAbsUrl = (url) => {
@@ -21082,11 +21109,12 @@ new file mode 100644
 index 0000000..f645ff8
 --- /dev/null
 +++ b/src/components/Link.astro
-@@ -0,0 +1,7 @@
+@@ -0,0 +1,8 @@
 +---
++import { isAbsUrl } from '/src/config/view';
 +let { url, label } = Astro.props;
 +if (label === undefined) label = url;
-+const target = /^https?:\/\//.test(url) ? '_blank' : undefined;
++const target = isAbsUrl(url) ? '_blank' : undefined;
 +---
 +
 +<a href={url} target={target}>{label}</a>
@@ -21214,7 +21242,7 @@ new file mode 100644
 index 0000000..e474d31
 --- /dev/null
 +++ b/src/pages/subpage/index.astro
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,19 @@
 +---
 +import { Link } from '/src/components';
 +import Layout from '/src/layouts/Layout.astro';
@@ -21222,6 +21250,8 @@ index 0000000..e474d31
 +import { app, args, pages, assets, img } from '/src/config/view';
 +const pageArgs = {
 +  title: 'Sub page Title',
++  description: 'Sub page description',
++  og_image: 'img/pages/subpage/og.png',
 +};
 +app.init(Astro, pageArgs);
 +---

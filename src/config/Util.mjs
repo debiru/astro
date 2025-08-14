@@ -58,13 +58,19 @@ const Util = {
   rtrim(str, char = '/') {
     return str.replaceAll(new RegExp(Util.sprintf('[%s]+$', Util.RegExp.escape(char)), 'g'), '');
   },
+  concatStr(str, params) {
+    if (str == null || str === '') return '';
+    if (params.prefix != null) str = params.prefix + str;
+    if (params.suffix != null) str = str + params.suffix;
+    return str;
+  },
   Array(length) {
     const array = [];
     for (let i = 0; i < length; ++i) array.push(i + 1);
     return array;
   },
   concat(arrayA, arrayB) {
-    Array.prototype.push.apply(arrayA, arrayB);
+    arrayA.push(...arrayB);
   },
 };
 
