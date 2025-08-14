@@ -1,9 +1,9 @@
 {
   "args": {
-    "siteName": "__SITE_NAME__",
-    "titleSuffix": "__TITLE_SUFFIX__",
-    "description": "__DESCRIPTION__",
-    "twitterIdWithAtMark": "__@TWITTER_ID__",
+    "siteName": "Astro Starter Kit",
+    "titleSuffix": "https://github.com/debiru/astro",
+    "description": "10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ",
+    "twitterIdWithAtMark": "@debiru_R",
     "lang": "ja",
     "locale": "ja_JP",
     "og_image": "img/global/og.png"

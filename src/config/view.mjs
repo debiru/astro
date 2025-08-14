@@ -8,10 +8,10 @@ export const app = {
     app.makePage('subpage', '/subpage', 'Sub page');
   },
   preInit() {
-    args.siteName = '__SITE_NAME__';
-    args.titleSuffix = '__TITLE_SUFFIX__';
-    args.description = '__DESCRIPTION__';
-    args.twitterIdWithAtMark = '__@TWITTER_ID__';
+    args.siteName = 'Astro Starter Kit';
+    args.titleSuffix = 'https://github.com/debiru/astro';
+    args.description = '10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ';
+    args.twitterIdWithAtMark = '@debiru_R';
     args.lang = 'ja';
     args.locale = 'ja_JP';
     args.og_image = 'img/global/og.png';
