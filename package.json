@@ -6,6 +6,7 @@
     "dev": "npm run disableDevToolbar && astro dev",
     "enableDevToolbar": "astro preferences reset devToolbar",
     "disableDevToolbar": "astro preferences disable devToolbar",
+    "src-prettier": "prettier --write '{{src,public}/**/*,./*}.{mdx,scss,js,ts,mjs,astro}'",
     "build": "build/pre-build.sh && astro build && build/post-build.sh",
     "watch": "build/watch.sh",
     "stylelint": "build/stylelint.sh",
@@ -13,13 +14,14 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.13.0"
+    "astro": "^5.13.10"
   },
   "devDependencies": {
     "glob": "^11.0.3",
     "js-beautify": "^1.15.4",
-    "sass": "^1.90.0",
-    "stylelint": "^16.23.1",
+    "prettier": "^3.6.2",
+    "sass": "^1.93.0",
+    "stylelint": "^16.24.0",
     "stylelint-config-standard": "^39.0.0"
   }
 }
