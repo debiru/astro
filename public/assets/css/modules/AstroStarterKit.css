@@ -10,6 +10,9 @@
   font-weight: bold;
   font-size: 3.2rem;
 }
+[data-mod=AstroStarterKit] li:not(:first-child) {
+  margin-top: 10px;
+}
 [data-mod=AstroStarterKit] pre {
   overflow: auto;
   padding: 8px;
