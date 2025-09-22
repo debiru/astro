@@ -2,11 +2,11 @@
 import Header from '/src/layouts/Header.astro';
 import Footer from '/src/layouts/Footer.astro';
 import Util from '/src/config/Util';
-import { args, assets, img } from '/src/config/view';
+import { args, rootPath, assets, img } from '/src/config/view';
 ---
 
 <!DOCTYPE html>
-<html lang={ args.lang } data-app-path={ args.path } data-key={ args.page.key } data-route={ args.page.route }>
+<html lang={ args.lang } data-key={ args.page.key } data-route={ args.page.route } data-app-route={ args.page.appRoute }>
   <head>
     <meta charset="UTF-8" />
     <title>{ args.title }</title>
@@ -29,8 +29,9 @@ import { args, assets, img } from '/src/config/view';
     <meta name="twitter:description" content={ args.description } />
     <meta name="twitter:site" content={ args.twitterIdWithAtMark } />
 
-    <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
-    <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
+    <link rel="icon" type="image/vnd.microsoft.icon" href={ rootPath('favicon.ico', true) } />
+    { !args.prevent.css.reset && <link rel="stylesheet" href={ assets('css/global/reset.css', true) } /> }
+    { !args.prevent.css.style && <link rel="stylesheet" href={ assets('css/global/style.css', true) } /> }
     <script src={ assets('js/global/base.js', true) }></script>{
       (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n'
     }{
@@ -41,9 +42,9 @@ import { args, assets, img } from '/src/config/view';
   </head>
   <body>
     <div id="page-container">
-      <header id="page-header"><Header /></header>
+      { !args.prevent.header && <header id="page-header"><Header /></header> }
       <main id="page-main"><slot /></main>
-      <footer id="page-footer"><Footer /></footer>
+      { !args.prevent.footer && <footer id="page-footer"><Footer /></footer> }
     </div>
   </body>
 </html>

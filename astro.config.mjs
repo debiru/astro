@@ -2,7 +2,8 @@ import { defineConfig } from 'astro/config';
 import myExtIntegration from '/src/config/myExtIntegration';
 
 // refs. https://astro.build/config
-export default defineConfig({
+export const config = {
+  base: '/',
   site: 'https://astro.debiru.net',
   trailingSlash: 'always',
   compressHTML: false,
@@ -10,4 +11,6 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
-});
+};
+
+export default defineConfig(config);

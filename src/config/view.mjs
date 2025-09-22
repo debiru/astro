@@ -5,7 +5,6 @@ export const pages = {};
 export const app = {
   setPages() {
     app.makePage('top', '/', 'Top');
-    app.makePage('subpage', '/subpage', 'Sub page');
   },
   preInit() {
     args.siteName = 'Astro Starter Kit';
@@ -16,8 +15,7 @@ export const app = {
     args.locale = 'ja_JP';
     args.og_image = 'img/global/og.png';
   },
-  postInit(Astro, pageArgs) {
-    app.Astro = Astro;
+  postInit(pageArgs) {
     app.args = pageArgs ?? {};
 
     // Overwrite args parameters
@@ -29,10 +27,9 @@ export const app = {
 
     args.og_type = args.path === '/' ? 'website' : 'article';
     if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
-
-    app.autoConfig();
   },
-  autoConfig() {
+  setConfig(Astro) {
+    app.Astro = Astro;
     app.url = app.Astro.url;
     args.domain = app.url.hostname;
     args.path = app.url.pathname.replace(/\.html$/, '');
@@ -41,10 +38,13 @@ export const app = {
     args.siteRootUrlWithoutProtocol = app.url.host;
     args.urlWithoutProtocol = app.url.host + args.path;
 
-    const selfRoute = route(args.path);
-    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
+    args.page = Object.values(pages).find((page) => page.route === args.path) ?? {};
     args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
 
+    args.prevent = {
+      css: {},
+      js: {},
+    };
     args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
       const value = [];
       const willAdd = (dir, file) => {
@@ -60,24 +60,29 @@ export const app = {
     }));
   },
   makePage(key, argRoute, label) {
-    pages[key] = { key, route: route(argRoute), label };
+    const page = { key, route: route(argRoute), label };
+    page.appRoute = Util.astro.removeBase(page.route);
+    pages[key] = page;
   },
-  init(Astro, pageArgs) {
+  init(Astro) {
     app.setPages();
+    if (Astro) app.setConfig(Astro);
     app.preInit();
-    if (Astro) app.postInit(Astro, pageArgs);
+  },
+  setPageConfig(pageArgs) {
+    app.postInit(pageArgs);
   },
 };
 
-export const rootPath = (path) => {
-  path = '/' + Util.ltrim(path);
+export const rootPath = (path, cacheBuster = false) => {
+  const base = Util.rtrim(Util.astro.get('base')) + '/';
+  path = base + Util.ltrim(path);
+  if (cacheBuster) path += '?' + Date.now();
   return path;
 };
 
 export const assets = (path, cacheBuster = false) => {
-  path = rootPath('assets/' + Util.ltrim(path));
-  if (cacheBuster) path += '?' + Date.now();
-  return path;
+  return rootPath('assets/' + Util.ltrim(path), cacheBuster);
 };
 
 export const assetsUrl = (path, cacheBuster = false) => {

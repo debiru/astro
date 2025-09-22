@@ -1,6 +1,19 @@
+import astroConfig from '/astro.config';
 import fs from 'fs';
 
 const Util = {
+  astro: {
+    get(key) {
+      const value = astroConfig[key];
+      if (key === 'base') return '/' + Util.trim(value ?? '');
+      return value;
+    },
+    removeBase(path) {
+      const base = Util.astro.get('base');
+      if (base === '/') return path;
+      return path.startsWith(base) ? path.slice(base.length) || '/' : path;
+    },
+  },
   fs: {
     basePath(path) {
       return process.cwd() + '/' + Util.ltrim(path);
@@ -44,6 +57,12 @@ const Util = {
       return str.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
     },
   },
+  concatStr(str, params) {
+    if (str == null || str === '') return '';
+    if (params.prefix != null) str = params.prefix + str;
+    if (params.suffix != null) str = str + params.suffix;
+    return str;
+  },
   sprintf(format, ...args) {
     let p = 0;
     return format.replace(/%./g, function(m) {
@@ -58,11 +77,8 @@ const Util = {
   rtrim(str, char = '/') {
     return str.replaceAll(new RegExp(Util.sprintf('[%s]+$', Util.RegExp.escape(char)), 'g'), '');
   },
-  concatStr(str, params) {
-    if (str == null || str === '') return '';
-    if (params.prefix != null) str = params.prefix + str;
-    if (params.suffix != null) str = str + params.suffix;
-    return str;
+  trim(str, char = '/') {
+    return Util.rtrim(Util.ltrim(str, char), char);
   },
   Array(length) {
     const array = [];
