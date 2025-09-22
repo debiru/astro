@@ -27,17 +27,19 @@ const Util = {
       } catch {}
       return isExist;
     },
-    getComponents(filePath) {
+    getImportVariables(filePath) {
       const content = fs.readFileSync(filePath, { encoding: 'utf8' });
-      const matches = Array.from(content.matchAll(/^import\s*{?([^}]*)}?\s*from\s*['"]\/src\/components\b/mg));
-      const components = [];
+      const matches = Array.from(content.matchAll(/^import\s*({[^}]+}|\S+)\s*from\s*['"](?:\/src\/)?([^'"]+)/mg));
+      const importVariables = {};
       matches.forEach((match) => {
-        let str = match[1];
-        str = str.replaceAll(/as\s+\w+/g, '');
-        str = str.replaceAll(/\s+/g, '');
-        Util.concat(components, str.split(','));
+        const dirName = match[2];
+        let variables = match[1];
+        variables = variables.replaceAll(/as\s+\w+/g, '');
+        variables = variables.replaceAll(/[\s{}]+/g, '');
+        importVariables[dirName] ??= [];
+        Util.concat(importVariables[dirName], variables.split(','));
       });
-      return components;
+      return importVariables;
     },
   },
   HTML: {

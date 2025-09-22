@@ -40,7 +40,7 @@ export const app = {
     args.urlWithoutProtocol = app.url.host + args.path;
 
     args.page = Object.values(pages).find((page) => page.route === args.path) ?? {};
-    args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
+    args.page.importVariables = Util.fs.getImportVariables(app.Astro.self.moduleId);
 
     args.prevent = {
       css: {},
@@ -54,8 +54,9 @@ export const app = {
         if (fileExist) value.push(path);
       };
       if (args.page.key) willAdd('pages', args.page.key);
-      args.page.useComponents.forEach((componentName) => {
-        willAdd('components', componentName);
+      console.debug(args.page.importVariables);
+      Object.entries(args.page.importVariables).forEach(([dirName, variableName]) => {
+        willAdd(dirName, variableName);
       });
       return [ext, value];
     }));
