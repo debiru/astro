@@ -33,26 +33,6 @@ body {
   padding-block: 8px;
 }
 
-#page-main {
-  padding-bottom: 50px;
-  text-align: center;
-}
-#page-main .content-inner > * {
-  margin-top: 30px;
-}
-#page-main h1 {
-  font-family: serif;
-  font-weight: bold;
-  font-size: 3.2rem;
-}
-#page-main pre {
-  overflow: auto;
-  padding: 8px;
-  border: 1px solid #090;
-  background: #cfc;
-  text-align: left;
-}
-
 #page-footer {
   border-top: 1px solid #999;
   background: #f0f0f0;

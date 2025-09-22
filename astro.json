@@ -12,12 +12,14 @@
     "top": {
       "key": "top",
       "route": "/",
-      "label": "Top"
+      "label": "Top",
+      "appRoute": "/"
     },
     "subpage": {
       "key": "subpage",
       "route": "/subpage/",
-      "label": "Sub page"
+      "label": "Subpage",
+      "appRoute": "/subpage/"
     }
   }
 }

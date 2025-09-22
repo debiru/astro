@@ -1,0 +1,21 @@
+[data-mod="AstroStarterKit"] {
+  padding-bottom: 50px;
+  text-align: center;
+
+  > * {
+    margin-top: 30px;
+  }
+
+  h1, h2 {
+    font-family: serif;
+    font-weight: bold;
+    font-size: 3.2rem;
+  }
+  pre {
+    overflow: auto;
+    padding: 8px;
+    border: 1px solid #090;
+    background: #cfc;
+    text-align: left;
+  }
+}

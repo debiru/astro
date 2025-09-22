@@ -5,6 +5,7 @@ export const pages = {};
 export const app = {
   setPages() {
     app.makePage('top', '/', 'Top');
+    app.makePage('subpage', '/subpage', 'Subpage');
   },
   preInit() {
     args.siteName = 'Astro Starter Kit';
@@ -26,7 +27,7 @@ export const app = {
     args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
 
     args.og_type = args.path === '/' ? 'website' : 'article';
-    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
+    if (!getIsAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
   },
   setConfig(Astro) {
     app.Astro = Astro;
@@ -89,7 +90,7 @@ export const assetsUrl = (path, cacheBuster = false) => {
   return Util.rtrim(app.Astro.url.origin) + assets(path, cacheBuster);
 };
 
-export const isAbsUrl = (url) => {
+export const getIsAbsUrl = (url) => {
   return /^(?:\w+:)?\/\//.test(url);
 };
 

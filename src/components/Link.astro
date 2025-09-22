@@ -1,8 +1,14 @@
 ---
-import { isAbsUrl } from '/src/config/view';
-let { url, label } = Astro.props;
-if (label === undefined) label = url;
-const target = isAbsUrl(url) ? '_blank' : undefined;
+import { getIsAbsUrl } from '/src/config/view';
+let children = await Astro.slots.render('default');
+let { page, href } = Astro.props;
+if (page) {
+  href = page.route;
+  if (children == null) children = page.label;
+}
+if (children == null) children = href;
+const isAbsUrl = getIsAbsUrl(href);
+const target = isAbsUrl ? '_blank' : undefined;
 ---
 
-<a href={url} target={target}>{label}</a>
+<a href={href} target={target} set:html={children} />
