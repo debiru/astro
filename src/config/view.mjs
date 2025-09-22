@@ -54,7 +54,6 @@ export const app = {
         if (fileExist) value.push(path);
       };
       if (args.page.key) willAdd('pages', args.page.key);
-      console.debug(args.page.importVariables);
       Object.entries(args.page.importVariables).forEach(([dirName, variableName]) => {
         willAdd(dirName, variableName);
       });

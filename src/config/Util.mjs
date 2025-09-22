@@ -42,6 +42,15 @@ const Util = {
       return importVariables;
     },
   },
+  async getPropsAsync(Astro) {
+    const props = Astro.props;
+    const slotKeys = Object.keys(Astro.slots);
+    const results = await Promise.all(slotKeys.map((slotKey) => Astro.slots.render(slotKey)));
+    props.slot = {};
+    slotKeys.forEach((slotKey, idx) => props.slot[slotKey] = results[idx]);
+    props.children = props.slot['default'];
+    return props;
+  },
   HTML: {
     escape(str) {
       const map = {
