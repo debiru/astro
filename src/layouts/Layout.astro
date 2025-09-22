@@ -29,22 +29,26 @@ import Footer from './Footer.astro';
     <meta name="twitter:description" content={ args.description } />
     <meta name="twitter:site" content={ args.twitterIdWithAtMark } />
 
-    <link rel="icon" type="image/vnd.microsoft.icon" href={ rootPath('favicon.ico', true) } />
-    { !args.prevent.css.reset && <link rel="stylesheet" href={ assets('css/global/reset.css', true) } /> }
-    { !args.prevent.css.style && <link rel="stylesheet" href={ assets('css/global/style.css', true) } /> }
+    <link rel="icon" type="image/vnd.microsoft.icon" href={ rootPath('favicon.ico', true) } />{
+      !args.prevent.css.reset && <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
+    }{
+      !args.prevent.css.style && <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
+    }
     <script src={ assets('js/global/base.js', true) }></script>{
-      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n'
+      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n\n'
     }{
-      args.assetList.css.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
+      args.assetList.css.map((css) => <link rel="stylesheet" href={ assets('css/' + Util.ltrim(css), true) } />)
     }{
-      args.assetList.js.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
+      args.assetList.js.map((js) => <script src={ assets('js/' + Util.ltrim(js), true) } />)
     }
   </head>
   <body>
-    <div id="page-container">
-      { !args.prevent.header && <header id="page-header"><Header /></header> }
-      <main id="page-main"><slot /></main>
-      { !args.prevent.footer && <footer id="page-footer"><Footer /></footer> }
+    <div id="page-container">{
+        !args.prevent.header && <header id="page-header"><Header /></header>
+      }
+      <main id="page-main"><slot /></main>{
+        !args.prevent.footer && <footer id="page-footer"><Footer /></footer>
+      }
     </div>
   </body>
 </html>
