@@ -1212,8 +1212,8 @@ index 0000000..6c73281
 +  <h1 class="siteName"><a href={pages.top.route}><img src={img('global/logo.png')} alt={args.siteName} width="100" height="100" /></a></h1>
 +</div>
 diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
-index e455c61..2153e77 100644
---- a/src/layouts/Layout.astro
+new file mode 100644
+--- /dev/null
 +++ b/src/layouts/Layout.astro
 @@ -1,0 +1,53 @@
 +---
@@ -1310,8 +1310,8 @@ index 0000000..33e8d40
 @@ -0,0 +1 @@
 +export { default as AstroStarterKit } from './AstroStarterKit.astro';
 diff --git a/src/pages/index.astro b/src/pages/index.astro
-index c04f360..6577e9e 100644
---- a/src/pages/index.astro
+new file mode 100644
+--- /dev/null
 +++ b/src/pages/index.astro
 @@ -1,0 +1,13 @@
 +---
