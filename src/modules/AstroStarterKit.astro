@@ -14,5 +14,17 @@ const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then
   <h2>Astro Starter Kit</h2>
   <p><Link href="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
   <p><Link href="https://qiita.com/debiru/items/a5ac8219b696045f88f5">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</Link></p>
+  <pre>curl -fsSLO https://astro.debiru.net/build/astro-starter-kit.sh
+chmod +x astro-starter-kit.sh
+
+# スクリプトの中身を確認する
+cat astro-starter-kit.sh
+
+# Astro Starter Kit をインストールする
+# astro.debiru.net の部分は、実際に利用したいドメイン名を指定してください
+# ./astro-starter-kit.sh astro.debiru.net
+./astro-starter-kit.sh
+
+git push</pre>
   <pre>{ starterKitContent }</pre>
 </div>
