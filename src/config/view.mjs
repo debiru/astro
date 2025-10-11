@@ -24,7 +24,7 @@ export const app = {
       args[key] = value;
     });
     // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
-    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
+    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | ' });
 
     args.og_type = args.path === '/' ? 'website' : 'article';
     if (!getIsAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
@@ -46,19 +46,21 @@ export const app = {
       css: {},
       js: {},
     };
-    args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
-      const value = [];
-      const willAdd = (dir, file) => {
-        const path = Util.sprintf('%s/%s.%s', dir, file, ext);
-        const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
-        if (fileExist) value.push(path);
-      };
-      if (args.page.key) willAdd('pages', args.page.key);
-      Object.entries(args.page.importVariables).forEach(([dirName, variableName]) => {
-        willAdd(dirName, variableName);
-      });
-      return [ext, value];
-    }));
+    args.assetList = Object.fromEntries(
+      ['css', 'js'].map((ext) => {
+        const value = [];
+        const willAdd = (dir, file) => {
+          const path = Util.sprintf('%s/%s.%s', dir, file, ext);
+          const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
+          if (fileExist) value.push(path);
+        };
+        if (args.page.key) willAdd('pages', args.page.key);
+        Object.entries(args.page.importVariables).forEach(([dirName, variableName]) => {
+          willAdd(dirName, variableName);
+        });
+        return [ext, value];
+      })
+    );
   },
   makePage(key, argRoute, label) {
     const page = { key, route: route(argRoute), label };

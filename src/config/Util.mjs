@@ -29,7 +29,7 @@ const Util = {
     },
     getImportVariables(filePath) {
       const content = fs.readFileSync(filePath, { encoding: 'utf8' });
-      const matches = Array.from(content.matchAll(/^import\s*({[^}]+}|\S+)\s*from\s*['"](?:\/src\/)?([^'"]+)/mg));
+      const matches = Array.from(content.matchAll(/^import\s*({[^}]+}|\S+)\s*from\s*['"](?:\/src\/)?([^'"]+)/gm));
       const importVariables = {};
       matches.forEach((match) => {
         const dirName = match[2];
@@ -47,7 +47,7 @@ const Util = {
     const slotKeys = Object.keys(Astro.slots);
     const results = await Promise.all(slotKeys.map((slotKey) => Astro.slots.render(slotKey)));
     props.slot = {};
-    slotKeys.forEach((slotKey, idx) => props.slot[slotKey] = results[idx]);
+    slotKeys.forEach((slotKey, idx) => (props.slot[slotKey] = results[idx]));
     props.children = props.slot['default'];
     return props;
   },
@@ -76,7 +76,7 @@ const Util = {
   },
   sprintf(format, ...args) {
     let p = 0;
-    return format.replace(/%./g, function(m) {
+    return format.replace(/%./g, function (m) {
       if (m === '%%') return '%';
       if (m === '%s') return args[p++];
       return m;

@@ -29,7 +29,7 @@ function exportAstroConfigJson(projectDir) {
   fs.writeFileSync(filePath, json);
 }
 
-export default function() {
+export default function () {
   return {
     name: 'myExt:integration',
     hooks: {
@@ -43,4 +43,4 @@ export default function() {
       },
     },
   };
-};
+}
