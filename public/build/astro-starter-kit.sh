@@ -57,6 +57,7 @@ git_commit_if "package.json" "update package.json"
 
 # 6. Prepare starter kit
 apply_patch "starter-kit.patch"
+apply_patch "starter-kit-binary.patch"
 perl -i -pe "s@site: '[^']+'@site: 'https://${DOMAIN_NAME}'@smg" astro.config.mjs
 git_commit_ifs "public/favicon.ico" "generate starter kit"
 
