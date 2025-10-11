@@ -39,9 +39,44 @@ index 0000000..b2299bf
 +[*.{astro,mdx,tsx}]
 +indent_style = space
 +indent_size = 2
+diff --git a/.prettierrc.mjs b/.prettierrc.mjs
+new file mode 100644
+index 0000000..7c52706
+--- /dev/null
++++ b/.prettierrc.mjs
+@@ -0,0 +1,29 @@
++/** @type {import("prettier").Config} */
++export default {
++  plugins: ['prettier-plugin-astro'],
++  overrides: [
++    {
++      files: '*.astro',
++      options: {
++        parser: 'astro',
++      },
++    },
++  ],
++  astroSkipFrontmatter: false,
++  printWidth: 1024,
++  tabWidth: 2,
++  useTabs: false,
++  semi: true,
++  singleQuote: true,
++  quoteProps: 'as-needed',
++  trailingComma: 'es5',
++  bracketSpacing: true,
++  bracketSameLine: false,
++  arrowParens: 'always',
++  requirePragma: false,
++  insertPragma: false,
++  htmlWhitespaceSensitivity: 'css',
++  endOfLine: 'lf',
++  embeddedLanguageFormatting: 'auto',
++  singleAttributePerLine: false,
++};
 diff --git a/.stylelintrc.json b/.stylelintrc.json
 new file mode 100644
-index 0000000..3832116
+index 0000000..cae7bf7
 --- /dev/null
 +++ b/.stylelintrc.json
 @@ -0,0 +1,20 @@
@@ -65,19 +100,81 @@ index 0000000..3832116
 +    "value-keyword-case": null
 +  }
 +}
+diff --git a/README.md b/README.md
+index ff19a3e..c9f5766 100644
+--- a/README.md
++++ b/README.md
+@@ -1,48 +1,15 @@
+-# Astro Starter Kit: Basics
++# Astro Starter Kit
+ 
+-```sh
+-npm create astro@latest -- --template basics
+-```
++- https://astro.debiru.net/
+ 
+-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
+-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
+-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
++## 作者
+ 
+-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
++- https://x.com/debiru_R
+ 
+-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
++## 解説
+ 
+-## 🚀 Project Structure
++- https://qiita.com/debiru/items/a5ac8219b696045f88f5
+ 
+-Inside of your Astro project, you'll see the following folders and files:
++## ライセンス
+ 
+-```text
+-/
+-├── public/
+-│   └── favicon.svg
+-├── src/
+-│   ├── layouts/
+-│   │   └── Layout.astro
+-│   └── pages/
+-│       └── index.astro
+-└── package.json
+-```
+-
+-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+-
+-## 🧞 Commands
+-
+-All commands are run from the root of the project, from a terminal:
+-
+-| Command                   | Action                                           |
+-| :------------------------ | :----------------------------------------------- |
+-| `npm install`             | Installs dependencies                            |
+-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+-| `npm run build`           | Build your production site to `./dist/`          |
+-| `npm run preview`         | Preview your build locally, before deploying     |
+-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+-
+-## 👀 Want to learn more?
+-
+-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
++This project is released under the [NYSL 0.9982](https://www.kmonos.net/nysl/) license.
 diff --git a/astro.config.mjs b/astro.config.mjs
-index e762ba5..f333444 100644
+index e762ba5..1b6c63e 100644
 --- a/astro.config.mjs
 +++ b/astro.config.mjs
-@@ -1,5 +1,13 @@
+@@ -1,5 +1,16 @@
 -// @ts-check
  import { defineConfig } from 'astro/config';
 +import myExtIntegration from '/src/config/myExtIntegration';
-
+ 
 -// https://astro.build/config
 -export default defineConfig({});
 +// refs. https://astro.build/config
-+export default defineConfig({
++export const config = {
++  base: '/',
 +  site: 'https://astro.debiru.net',
 +  trailingSlash: 'always',
 +  compressHTML: false,
@@ -85,7 +182,49 @@ index e762ba5..f333444 100644
 +  build: {
 +    format: 'directory',
 +  },
-+});
++};
++
++export default defineConfig(config);
+diff --git a/astro.json b/astro.json
+new file mode 100644
+index 0000000..e249304
+--- /dev/null
++++ b/astro.json
+@@ -0,0 +1,25 @@
++{
++  "args": {
++    "siteName": "Astro Starter Kit",
++    "titleSuffix": "https://github.com/debiru/astro",
++    "description": "10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ",
++    "twitterIdWithAtMark": "@debiru_R",
++    "lang": "ja",
++    "locale": "ja_JP",
++    "og_image": "img/global/og.png"
++  },
++  "pages": {
++    "top": {
++      "key": "top",
++      "route": "/",
++      "label": "Top",
++      "appRoute": "/"
++    },
++    "subpage": {
++      "key": "subpage",
++      "route": "/subpage/",
++      "label": "Subpage",
++      "appRoute": "/subpage/"
++    }
++  }
++}
+diff --git a/build/post-build.sh b/build/post-build.sh
+new file mode 100755
+index 0000000..f8fefb3
+--- /dev/null
++++ b/build/post-build.sh
+@@ -0,0 +1,3 @@
++#!/bin/bash
++
++cd $(dirname $0)/..
 diff --git a/build/pre-build.sh b/build/pre-build.sh
 new file mode 100755
 index 0000000..7a7be25
@@ -98,18 +237,9 @@ index 0000000..7a7be25
 +
 +./sass-compile.sh
 +./stylelint.sh
-diff --git a/build/post-build.sh b/build/post-build.sh
-new file mode 100755
-index 0000000..7a7be25
---- /dev/null
-+++ b/build/post-build.sh
-@@ -0,0 +1,3 @@
-+#!/bin/bash
-+
-+cd $(dirname $0)/..
 diff --git a/build/sass-compile.sh b/build/sass-compile.sh
 new file mode 100755
-index 0000000..dc59db8
+index 0000000..d602d42
 --- /dev/null
 +++ b/build/sass-compile.sh
 @@ -0,0 +1,10 @@
@@ -150,7 +280,7 @@ index 0000000..2764123
 +npx stylelint "public/assets/css/**/*.css"
 diff --git a/build/watch.sh b/build/watch.sh
 new file mode 100755
-index 0000000..3423ea6
+index 0000000..369d9da
 --- /dev/null
 +++ b/build/watch.sh
 @@ -0,0 +1,6 @@
@@ -160,61 +290,100 @@ index 0000000..3423ea6
 +
 +./pre-build.sh
 +./sass-watch.sh
-diff --git a/public/assets/js/global/base.js b/public/assets/js/global/base.js
+diff --git a/public/assets/css/components/Link.css b/public/assets/css/components/Link.css
 new file mode 100644
-index 0000000..bedd521
+index 0000000..8b13789
 --- /dev/null
-+++ b/public/assets/js/global/base.js
-@@ -0,0 +1,3 @@
-+(function() {
-+  'use strict';
-+})();
-diff --git a/public/assets/js/pages/top.js b/public/assets/js/pages/top.js
++++ b/public/assets/css/components/Link.css
+@@ -0,0 +1 @@
++
+diff --git a/public/assets/css/global/reset.css b/public/assets/css/global/reset.css
 new file mode 100644
-index 0000000..bedd521
+index 0000000..2de5778
 --- /dev/null
-+++ b/public/assets/js/pages/top.js
-@@ -0,0 +1,3 @@
-+(function() {
-+  'use strict';
-+})();
-diff --git a/public/assets/js/pages/subpage.js b/public/assets/js/pages/subpage.js
-new file mode 100644
-index 0000000..bedd521
---- /dev/null
-+++ b/public/assets/js/pages/subpage.js
-@@ -0,0 +1,3 @@
-+(function() {
-+  'use strict';
-+})();
-diff --git a/public/assets/js/components/Link.js b/public/assets/js/components/Link.js
-new file mode 100644
-index 0000000..bedd521
---- /dev/null
-+++ b/public/assets/js/components/Link.js
-@@ -0,0 +1,3 @@
-+(function() {
-+  'use strict';
-+})();
-diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
-new file mode 100644
-index 0000000..bca856a
---- /dev/null
-+++ b/public/assets/scss/global/reset.scss
-@@ -0,0 +1,98 @@
-+html, body, div, span, applet, object, iframe,
-+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-+a, abbr, acronym, address, big, cite, code,
-+del, dfn, em, img, ins, kbd, q, s, samp,
-+small, strike, strong, sub, sup, tt, var,
-+b, u, i, center,
-+dl, dt, dd, ol, ul, li,
-+fieldset, form, label, legend,
-+table, caption, tbody, tfoot, thead, tr, th, td,
-+article, aside, canvas, details, embed,
-+figure, figcaption, footer, header, hgroup,
-+menu, nav, output, ruby, section, summary,
-+time, mark, audio, video {
++++ b/public/assets/css/global/reset.css
+@@ -0,0 +1,191 @@
++html,
++body,
++div,
++span,
++applet,
++object,
++iframe,
++h1,
++h2,
++h3,
++h4,
++h5,
++h6,
++p,
++blockquote,
++pre,
++a,
++abbr,
++acronym,
++address,
++big,
++cite,
++code,
++del,
++dfn,
++em,
++img,
++ins,
++kbd,
++q,
++s,
++samp,
++small,
++strike,
++strong,
++sub,
++sup,
++tt,
++var,
++b,
++u,
++i,
++center,
++dl,
++dt,
++dd,
++ol,
++ul,
++li,
++fieldset,
++form,
++label,
++legend,
++table,
++caption,
++tbody,
++tfoot,
++thead,
++tr,
++th,
++td,
++article,
++aside,
++canvas,
++details,
++embed,
++figure,
++figcaption,
++footer,
++header,
++hgroup,
++menu,
++nav,
++output,
++ruby,
++section,
++summary,
++time,
++mark,
++audio,
++video {
 +  margin: 0;
 +  padding: 0;
 +  border: 0;
@@ -227,7 +396,8 @@ index 0000000..bca856a
 +  line-height: 1;
 +}
 +
-+ol, ul {
++ol,
++ul {
 +  list-style: none;
 +}
 +
@@ -236,17 +406,23 @@ index 0000000..bca856a
 +  border-spacing: 0;
 +}
 +
-+caption, th, td {
++caption,
++th,
++td {
 +  text-align: left;
 +  font-weight: normal;
 +  vertical-align: middle;
 +}
 +
-+q, blockquote {
++q,
++blockquote {
 +  quotes: none;
 +}
 +
-+q::before, q::after, blockquote::before, blockquote::after {
++q::before,
++q::after,
++blockquote::before,
++blockquote::after {
 +  content: "";
 +  content: none;
 +}
@@ -255,11 +431,24 @@ index 0000000..bca856a
 +  border: none;
 +}
 +
-+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
++article,
++aside,
++details,
++figcaption,
++figure,
++footer,
++header,
++hgroup,
++main,
++menu,
++nav,
++section,
++summary {
 +  display: block;
 +}
 +
-+sup, sub {
++sup,
++sub {
 +  font-size: 75%;
 +}
 +
@@ -271,15 +460,18 @@ index 0000000..bca856a
 +  vertical-align: sub;
 +}
 +
-+textarea, pre {
++textarea,
++pre {
 +  font-family: monospace;
 +}
 +
-+b, strong {
++b,
++strong {
 +  font-weight: bold;
 +}
 +
-+i, em {
++i,
++em {
 +  font-style: italic;
 +}
 +
@@ -293,7 +485,346 @@ index 0000000..bca856a
 +  font-size: 100%;
 +}
 +
-+img, iframe, video {
++img,
++iframe,
++video {
++  vertical-align: top;
++}
++
++button {
++  cursor: pointer;
++}
+diff --git a/public/assets/css/global/style.css b/public/assets/css/global/style.css
+new file mode 100644
+index 0000000..4e560f1
+--- /dev/null
++++ b/public/assets/css/global/style.css
+@@ -0,0 +1,52 @@
++html {
++  scroll-behavior: smooth;
++  font-size: 62.5%;
++}
++
++body {
++  -webkit-text-size-adjust: 100%;
++  font-size: 1.6rem;
++}
++
++.wbr {
++  display: inline-block;
++}
++
++.content-inner {
++  max-width: 1080px;
++  margin-inline: auto;
++  padding-inline: 10px;
++}
++
++#page-container {
++  display: grid;
++  grid-template-rows: auto 1fr auto;
++  grid-template-columns: 100%;
++  min-width: 100dvw;
++  min-height: 100dvh;
++}
++
++#page-header .content-inner {
++  border-bottom: 1px solid #ccc;
++}
++#page-header .siteName {
++  padding-block: 8px;
++}
++
++#page-footer {
++  border-top: 1px solid #999;
++  background: #f0f0f0;
++}
++#page-footer .footerArea {
++  padding: 4px 8px 8px;
++}
++#page-footer .footerArea .copyright {
++  padding-top: 4px;
++  text-align: center;
++  font-family: Verdana, sans-serif;
++  font-size: 1.4rem;
++}
++#page-footer .footerArea .copyright img {
++  margin-top: -4px;
++  vertical-align: middle;
++}
+diff --git a/public/assets/css/modules/AstroStarterKit.css b/public/assets/css/modules/AstroStarterKit.css
+new file mode 100644
+index 0000000..496be56
+--- /dev/null
++++ b/public/assets/css/modules/AstroStarterKit.css
+@@ -0,0 +1,23 @@
++[data-mod=AstroStarterKit] {
++  padding-bottom: 50px;
++  text-align: center;
++}
++[data-mod=AstroStarterKit] > * {
++  margin-top: 30px;
++}
++[data-mod=AstroStarterKit] h1,
++[data-mod=AstroStarterKit] h2 {
++  font-family: serif;
++  font-weight: bold;
++  font-size: 3.2rem;
++}
++[data-mod=AstroStarterKit] li:not(:first-child) {
++  margin-top: 10px;
++}
++[data-mod=AstroStarterKit] pre {
++  overflow: auto;
++  padding: 8px;
++  border: 1px solid #090;
++  background: #cfc;
++  text-align: left;
++}
+diff --git a/public/assets/css/pages/subpage.css b/public/assets/css/pages/subpage.css
+new file mode 100644
+index 0000000..0cf9a9b
+--- /dev/null
++++ b/public/assets/css/pages/subpage.css
+@@ -0,0 +1 @@
++/* subpage.scss */
+diff --git a/public/assets/css/pages/top.css b/public/assets/css/pages/top.css
+new file mode 100644
+index 0000000..16ae7e9
+--- /dev/null
++++ b/public/assets/css/pages/top.css
+@@ -0,0 +1 @@
++/* top.scss */
+diff --git a/public/assets/js/components/Link.js b/public/assets/js/components/Link.js
+new file mode 100644
+index 0000000..b644665
+--- /dev/null
++++ b/public/assets/js/components/Link.js
+@@ -0,0 +1,3 @@
++(function () {
++  'use strict';
++})();
+diff --git a/public/assets/js/global/base.js b/public/assets/js/global/base.js
+new file mode 100644
+index 0000000..b644665
+--- /dev/null
++++ b/public/assets/js/global/base.js
+@@ -0,0 +1,3 @@
++(function () {
++  'use strict';
++})();
+diff --git a/public/assets/js/pages/subpage.js b/public/assets/js/pages/subpage.js
+new file mode 100644
+index 0000000..b644665
+--- /dev/null
++++ b/public/assets/js/pages/subpage.js
+@@ -0,0 +1,3 @@
++(function () {
++  'use strict';
++})();
+diff --git a/public/assets/js/pages/top.js b/public/assets/js/pages/top.js
+new file mode 100644
+index 0000000..b644665
+--- /dev/null
++++ b/public/assets/js/pages/top.js
+@@ -0,0 +1,3 @@
++(function () {
++  'use strict';
++})();
+diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
+new file mode 100644
+index 0000000..e69de29
+diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
+new file mode 100644
+index 0000000..4e2e342
+--- /dev/null
++++ b/public/assets/scss/global/reset.scss
+@@ -0,0 +1,191 @@
++html,
++body,
++div,
++span,
++applet,
++object,
++iframe,
++h1,
++h2,
++h3,
++h4,
++h5,
++h6,
++p,
++blockquote,
++pre,
++a,
++abbr,
++acronym,
++address,
++big,
++cite,
++code,
++del,
++dfn,
++em,
++img,
++ins,
++kbd,
++q,
++s,
++samp,
++small,
++strike,
++strong,
++sub,
++sup,
++tt,
++var,
++b,
++u,
++i,
++center,
++dl,
++dt,
++dd,
++ol,
++ul,
++li,
++fieldset,
++form,
++label,
++legend,
++table,
++caption,
++tbody,
++tfoot,
++thead,
++tr,
++th,
++td,
++article,
++aside,
++canvas,
++details,
++embed,
++figure,
++figcaption,
++footer,
++header,
++hgroup,
++menu,
++nav,
++output,
++ruby,
++section,
++summary,
++time,
++mark,
++audio,
++video {
++  margin: 0;
++  padding: 0;
++  border: 0;
++  font: inherit;
++  font-size: 100%;
++  vertical-align: baseline;
++}
++
++html {
++  line-height: 1;
++}
++
++ol,
++ul {
++  list-style: none;
++}
++
++table {
++  border-collapse: separate;
++  border-spacing: 0;
++}
++
++caption,
++th,
++td {
++  text-align: left;
++  font-weight: normal;
++  vertical-align: middle;
++}
++
++q,
++blockquote {
++  quotes: none;
++}
++
++q::before,
++q::after,
++blockquote::before,
++blockquote::after {
++  content: '';
++  content: none;
++}
++
++a img {
++  border: none;
++}
++
++article,
++aside,
++details,
++figcaption,
++figure,
++footer,
++header,
++hgroup,
++main,
++menu,
++nav,
++section,
++summary {
++  display: block;
++}
++
++sup,
++sub {
++  font-size: 75%;
++}
++
++sup {
++  vertical-align: super;
++}
++
++sub {
++  vertical-align: sub;
++}
++
++textarea,
++pre {
++  font-family: monospace;
++}
++
++b,
++strong {
++  font-weight: bold;
++}
++
++i,
++em {
++  font-style: italic;
++}
++
++hr {
++  margin: 0;
++  padding: 0;
++  border: 0;
++}
++
++select {
++  font-size: 100%;
++}
++
++img,
++iframe,
++video {
 +  vertical-align: top;
 +}
 +
@@ -302,10 +833,10 @@ index 0000000..bca856a
 +}
 diff --git a/public/assets/scss/global/style.scss b/public/assets/scss/global/style.scss
 new file mode 100644
-index 0000000..fd8f696
+index 0000000..f538538
 --- /dev/null
 +++ b/public/assets/scss/global/style.scss
-@@ -0,0 +1,81 @@
+@@ -0,0 +1,57 @@
 +html {
 +  scroll-behavior: smooth;
 +  font-size: 62.5%;
@@ -343,30 +874,6 @@ index 0000000..fd8f696
 +  }
 +}
 +
-+#page-main {
-+  padding-bottom: 50px;
-+  text-align: center;
-+
-+  .content-inner {
-+    > * {
-+      margin-top: 30px;
-+    }
-+  }
-+
-+  h1 {
-+    font-family: serif;
-+    font-weight: bold;
-+    font-size: 3.2rem;
-+  }
-+  pre {
-+    overflow: auto;
-+    padding: 8px;
-+    border: 1px solid #090;
-+    background: #cfc;
-+    text-align: left;
-+  }
-+}
-+
 +#page-footer {
 +  border-top: 1px solid #999;
 +  background: #f0f0f0;
@@ -387,36 +894,1302 @@ index 0000000..fd8f696
 +    }
 +  }
 +}
-diff --git a/public/assets/scss/pages/top.scss b/public/assets/scss/pages/top.scss
+diff --git a/public/assets/scss/modules/AstroStarterKit.scss b/public/assets/scss/modules/AstroStarterKit.scss
 new file mode 100644
-index 0000000..fd8f696
+index 0000000..0c02472
 --- /dev/null
-+++ b/public/assets/scss/pages/top.scss
-@@ -0,0 +1,1 @@
++++ b/public/assets/scss/modules/AstroStarterKit.scss
+@@ -0,0 +1,24 @@
++[data-mod='AstroStarterKit'] {
++  padding-bottom: 50px;
++  text-align: center;
 +
++  > * {
++    margin-top: 30px;
++  }
++  h1,
++  h2 {
++    font-family: serif;
++    font-weight: bold;
++    font-size: 3.2rem;
++  }
++  li:not(:first-child) {
++    margin-top: 10px;
++  }
++  pre {
++    overflow: auto;
++    padding: 8px;
++    border: 1px solid #090;
++    background: #cfc;
++    text-align: left;
++  }
++}
 diff --git a/public/assets/scss/pages/subpage.scss b/public/assets/scss/pages/subpage.scss
 new file mode 100644
-index 0000000..fd8f696
+index 0000000..0cf9a9b
 --- /dev/null
 +++ b/public/assets/scss/pages/subpage.scss
-@@ -0,0 +1,1 @@
-+
-diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
+@@ -0,0 +1 @@
++/* subpage.scss */
+diff --git a/public/assets/scss/pages/top.scss b/public/assets/scss/pages/top.scss
 new file mode 100644
-index 0000000..fd8f696
+index 0000000..16ae7e9
 --- /dev/null
-+++ b/public/assets/scss/components/Link.scss
-@@ -0,0 +1,1 @@
++++ b/public/assets/scss/pages/top.scss
+@@ -0,0 +1 @@
++/* top.scss */
+diff --git a/public/build/astro-starter-kit.sh b/public/build/astro-starter-kit.sh
+new file mode 100755
+index 0000000..ebf7d99
+--- /dev/null
++++ b/public/build/astro-starter-kit.sh
+@@ -0,0 +1,69 @@
++#!/bin/bash
 +
++if [ $# -ne 1 ]; then
++  echo "Usage: $0 YOUR_DOMAIN_NAME";
++  exit 1
++fi
++
++if !(type npm > /dev/null 2>&1); then
++  echo "Please install \`node\` and \`npm\` command."
++  exit 1
++fi
++
++# 0. bash configure
++shopt -s dotglob
++BASE_URL="https://astro.debiru.net"
++DOMAIN_NAME="$1"
++
++function apply_patch() {
++  curl -fsSL "${BASE_URL}/build/patch/$1" | git apply --allow-empty --quiet
++}
++
++function git_commit_if() {
++  if [ "$(git status --short | wc -l)" = "1" ]; then
++    git_commit_ifs "$1" "$2"
++  fi
++}
++
++function git_commit_ifs() {
++  if [ -n "$(git status --short | grep $1)" ]; then
++    git add .
++    git commit --quiet -m "$2"
++  fi
++}
++
++# 1. Generate Astro Project
++[ ! -e "astro.config.mjs" ] && npm create astro@latest project -- --template minimal --no-install --no-git
++[ -d "project" ] && [ -n "$(ls -A project)" ] && mv project/* . && rm -r project
++git_commit_ifs ".vscode" "npm create astro@latest"
++
++# 2. Update .gitignore
++apply_patch "gitignore.patch"
++git_commit_if ".gitignore" "update .gitignore"
++
++# 3. Generate deploy.yml
++apply_patch "deploy.yml.patch"
++git_commit_if ".github" "add .github/workflows/deploy.yml"
++
++# 4. Remove src/* files
++[ -d "src" ] && rm -r src
++[ ! -e "src" ] && mkdir src
++git_commit_ifs "src/" "remove default src files"
++
++# 5. Update package.json
++apply_patch "package.json.patch"
++perl -i -pe "BEGIN{undef $/;} s@(?<=[^\n])\z@\n@smg" package.json
++git_commit_if "package.json" "update package.json"
++
++# 6. Prepare starter kit
++apply_patch "starter-kit.patch"
++perl -i -pe "s@site: '[^']+'@site: 'https://${DOMAIN_NAME}'@smg" astro.config.mjs
++git_commit_ifs "public/favicon.ico" "generate starter kit"
++
++# 7. Generate package-lock.json
++npm install -D glob js-beautify sass stylelint stylelint-config-standard
++git_commit_ifs "package-lock.json" "npm install"
++
++# 8. Build
++npm run build
++git_commit_ifs "astro.json" "npm run build"
+diff --git a/public/build/patch/deploy.yml.patch b/public/build/patch/deploy.yml.patch
+new file mode 100644
+index 0000000..98c73e5
+--- /dev/null
++++ b/public/build/patch/deploy.yml.patch
+@@ -0,0 +1,40 @@
++diff --git a/.github/workflows/deploy.yml b/.github/workflows/deploy.yml
++new file mode 100644
++index 0000000..9732556
++--- /dev/null
+++++ b/.github/workflows/deploy.yml
++@@ -0,0 +1,34 @@
+++name: Deploy to GitHub Pages
+++
+++on:
+++  push:
+++    branches: [ main ]
+++  workflow_dispatch:
+++
+++permissions:
+++  contents: read
+++  pages: write
+++  id-token: write
+++
+++jobs:
+++  build:
+++    runs-on: ubuntu-latest
+++    steps:
+++      - name: Checkout your repository using git
+++        uses: actions/checkout@v4
+++      - name: Install, build, and upload your site
+++        uses: withastro/action@v3
+++        with:
+++          node-version: 22
+++          package-manager: npm@latest
+++
+++  deploy:
+++    needs: build
+++    runs-on: ubuntu-latest
+++    environment:
+++      name: github-pages
+++      url: ${{ steps.deployment.outputs.page_url }}
+++    steps:
+++      - name: Deploy to GitHub Pages
+++        id: deployment
+++        uses: actions/deploy-pages@v4
+diff --git a/public/build/patch/gitignore.patch b/public/build/patch/gitignore.patch
+new file mode 100644
+index 0000000..fbe03af
+--- /dev/null
++++ b/public/build/patch/gitignore.patch
+@@ -0,0 +1,10 @@
++diff --git a/.gitignore b/.gitignore
++index 16d54bb..3c9f7c1 100644
++--- a/.gitignore
+++++ b/.gitignore
++@@ -1,4 +1,4 @@
++ # build output
++-dist/
+++/dist/
++ # generated types
++ .astro/
+diff --git a/public/build/patch/package.json.patch b/public/build/patch/package.json.patch
+new file mode 100644
+index 0000000..d5ed260
+--- /dev/null
++++ b/public/build/patch/package.json.patch
+@@ -0,0 +1,19 @@
++diff --git a/package.json b/package.json
++index e064a12..5b932b7 100644
++--- a/package.json
+++++ b/package.json
++@@ -4,7 +4,12 @@
++   "version": "0.0.1",
++   "scripts": {
++-    "dev": "astro dev",
++-    "build": "astro build",
+++    "dev": "npm run disableDevToolbar && astro dev",
+++    "enableDevToolbar": "astro preferences reset devToolbar",
+++    "disableDevToolbar": "astro preferences disable devToolbar",
+++    "src-prettier": "prettier --write '{{src,public}/**/*,./*}.{mdx,scss,js,ts,mjs,astro}'",
+++    "build": "build/pre-build.sh && astro build && build/post-build.sh",
+++    "watch": "build/watch.sh",
+++    "stylelint": "build/stylelint.sh",
++     "preview": "astro preview",
++     "astro": "astro"
++   },
+diff --git a/public/build/patch/starter-kit.patch b/public/build/patch/starter-kit.patch
+new file mode 100644
+index 0000000..fe78396
+--- /dev/null
++++ b/public/build/patch/starter-kit.patch
+@@ -0,0 +1,806 @@
++diff --git a/.editorconfig b/.editorconfig
++new file mode 100644
++index 0000000..b2299bf
++--- /dev/null
+++++ b/.editorconfig
++@@ -0,0 +1,35 @@
+++root = true
+++
+++[*]
+++charset = utf-8
+++end_of_line = lf
+++insert_final_newline = true
+++trim_trailing_whitespace = true
+++
+++[*.html]
+++indent_style = space
+++indent_size = 2
+++
+++[*.svg]
+++indent_style = space
+++indent_size = 2
+++
+++[*.php]
+++indent_style = space
+++indent_size = 2
+++
+++[*.{css,scss}]
+++indent_style = space
+++indent_size = 2
+++
+++[*.json]
+++indent_style = space
+++indent_size = 2
+++
+++[*.{js,mjs,ts}]
+++indent_style = space
+++indent_size = 2
+++
+++[*.{astro,mdx,tsx}]
+++indent_style = space
+++indent_size = 2
++diff --git a/.stylelintrc.json b/.stylelintrc.json
++new file mode 100644
++index 0000000..3832116
++--- /dev/null
+++++ b/.stylelintrc.json
++@@ -0,0 +1,20 @@
+++{
+++  "extends": "stylelint-config-standard",
+++  "rules": {
+++    "alpha-value-notation": null,
+++    "at-rule-empty-line-before": null,
+++    "comment-empty-line-before": null,
+++    "custom-property-pattern": null,
+++    "declaration-block-no-redundant-longhand-properties": null,
+++    "declaration-empty-line-before": null,
+++    "no-descending-specificity": null,
+++    "no-duplicate-selectors": null,
+++    "no-empty-source": null,
+++    "property-no-vendor-prefix": null,
+++    "selector-class-pattern": null,
+++    "selector-id-pattern": null,
+++    "rule-empty-line-before": null,
+++    "selector-attribute-quotes": null,
+++    "value-keyword-case": null
+++  }
+++}
++diff --git a/astro.config.mjs b/astro.config.mjs
++index e762ba5..f333444 100644
++--- a/astro.config.mjs
+++++ b/astro.config.mjs
++@@ -1,5 +1,13 @@
++-// @ts-check
++ import { defineConfig } from 'astro/config';
+++import myExtIntegration from '/src/config/myExtIntegration';
++
++-// https://astro.build/config
++-export default defineConfig({});
+++// refs. https://astro.build/config
+++export default defineConfig({
+++  site: 'https://astro.debiru.net',
+++  trailingSlash: 'always',
+++  compressHTML: false,
+++  integrations: [myExtIntegration()],
+++  build: {
+++    format: 'directory',
+++  },
+++});
++diff --git a/build/pre-build.sh b/build/pre-build.sh
++new file mode 100755
++index 0000000..7a7be25
++--- /dev/null
+++++ b/build/pre-build.sh
++@@ -0,0 +1,6 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)
+++
+++./sass-compile.sh
+++./stylelint.sh
++diff --git a/build/post-build.sh b/build/post-build.sh
++new file mode 100755
++index 0000000..7a7be25
++--- /dev/null
+++++ b/build/post-build.sh
++@@ -0,0 +1,3 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)/..
++diff --git a/build/sass-compile.sh b/build/sass-compile.sh
++new file mode 100755
++index 0000000..dc59db8
++--- /dev/null
+++++ b/build/sass-compile.sh
++@@ -0,0 +1,10 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)/..
+++
+++CSS_DIR="public/assets/css"
+++SCSS_DIR="public/assets/scss"
+++
+++touch "${CSS_DIR}"
+++rm -r "${CSS_DIR}"
+++npx sass --no-source-map "${SCSS_DIR}:${CSS_DIR}"
++diff --git a/build/sass-watch.sh b/build/sass-watch.sh
++new file mode 100755
++index 0000000..194d364
++--- /dev/null
+++++ b/build/sass-watch.sh
++@@ -0,0 +1,8 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)/..
+++
+++CSS_DIR="public/assets/css"
+++SCSS_DIR="public/assets/scss"
+++
+++npx sass --watch --no-source-map "${SCSS_DIR}:${CSS_DIR}"
++diff --git a/build/stylelint.sh b/build/stylelint.sh
++new file mode 100755
++index 0000000..2764123
++--- /dev/null
+++++ b/build/stylelint.sh
++@@ -0,0 +1,5 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)/..
+++
+++npx stylelint "public/assets/css/**/*.css"
++diff --git a/build/watch.sh b/build/watch.sh
++new file mode 100755
++index 0000000..3423ea6
++--- /dev/null
+++++ b/build/watch.sh
++@@ -0,0 +1,6 @@
+++#!/bin/bash
+++
+++cd $(dirname $0)
+++
+++./pre-build.sh
+++./sass-watch.sh
++diff --git a/public/assets/js/global/base.js b/public/assets/js/global/base.js
++new file mode 100644
++index 0000000..bedd521
++--- /dev/null
+++++ b/public/assets/js/global/base.js
++@@ -0,0 +1,3 @@
+++(function() {
+++  'use strict';
+++})();
++diff --git a/public/assets/js/pages/top.js b/public/assets/js/pages/top.js
++new file mode 100644
++index 0000000..bedd521
++--- /dev/null
+++++ b/public/assets/js/pages/top.js
++@@ -0,0 +1,3 @@
+++(function() {
+++  'use strict';
+++})();
++diff --git a/public/assets/js/pages/subpage.js b/public/assets/js/pages/subpage.js
++new file mode 100644
++index 0000000..bedd521
++--- /dev/null
+++++ b/public/assets/js/pages/subpage.js
++@@ -0,0 +1,3 @@
+++(function() {
+++  'use strict';
+++})();
++diff --git a/public/assets/js/components/Link.js b/public/assets/js/components/Link.js
++new file mode 100644
++index 0000000..bedd521
++--- /dev/null
+++++ b/public/assets/js/components/Link.js
++@@ -0,0 +1,3 @@
+++(function() {
+++  'use strict';
+++})();
++diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
++new file mode 100644
++index 0000000..bca856a
++--- /dev/null
+++++ b/public/assets/scss/global/reset.scss
++@@ -0,0 +1,98 @@
+++html, body, div, span, applet, object, iframe,
+++h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+++a, abbr, acronym, address, big, cite, code,
+++del, dfn, em, img, ins, kbd, q, s, samp,
+++small, strike, strong, sub, sup, tt, var,
+++b, u, i, center,
+++dl, dt, dd, ol, ul, li,
+++fieldset, form, label, legend,
+++table, caption, tbody, tfoot, thead, tr, th, td,
+++article, aside, canvas, details, embed,
+++figure, figcaption, footer, header, hgroup,
+++menu, nav, output, ruby, section, summary,
+++time, mark, audio, video {
+++  margin: 0;
+++  padding: 0;
+++  border: 0;
+++  font: inherit;
+++  font-size: 100%;
+++  vertical-align: baseline;
+++}
+++
+++html {
+++  line-height: 1;
+++}
+++
+++ol, ul {
+++  list-style: none;
+++}
+++
+++table {
+++  border-collapse: separate;
+++  border-spacing: 0;
+++}
+++
+++caption, th, td {
+++  text-align: left;
+++  font-weight: normal;
+++  vertical-align: middle;
+++}
+++
+++q, blockquote {
+++  quotes: none;
+++}
+++
+++q::before, q::after, blockquote::before, blockquote::after {
+++  content: "";
+++  content: none;
+++}
+++
+++a img {
+++  border: none;
+++}
+++
+++article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+++  display: block;
+++}
+++
+++sup, sub {
+++  font-size: 75%;
+++}
+++
+++sup {
+++  vertical-align: super;
+++}
+++
+++sub {
+++  vertical-align: sub;
+++}
+++
+++textarea, pre {
+++  font-family: monospace;
+++}
+++
+++b, strong {
+++  font-weight: bold;
+++}
+++
+++i, em {
+++  font-style: italic;
+++}
+++
+++hr {
+++  margin: 0;
+++  padding: 0;
+++  border: 0;
+++}
+++
+++select {
+++  font-size: 100%;
+++}
+++
+++img, iframe, video {
+++  vertical-align: top;
+++}
+++
+++button {
+++  cursor: pointer;
+++}
++diff --git a/public/assets/scss/global/style.scss b/public/assets/scss/global/style.scss
++new file mode 100644
++index 0000000..fd8f696
++--- /dev/null
+++++ b/public/assets/scss/global/style.scss
++@@ -0,0 +1,81 @@
+++html {
+++  scroll-behavior: smooth;
+++  font-size: 62.5%;
+++}
+++
+++body {
+++  -webkit-text-size-adjust: 100%;
+++  font-size: 1.6rem;
+++}
+++
+++.wbr {
+++  display: inline-block;
+++}
+++
+++.content-inner {
+++  max-width: 1080px;
+++  margin-inline: auto;
+++  padding-inline: 10px;
+++}
+++
+++#page-container {
+++  display: grid;
+++  grid-template-rows: auto 1fr auto;
+++  grid-template-columns: 100%;
+++  min-width: 100dvw;
+++  min-height: 100dvh;
+++}
+++
+++#page-header {
+++  .content-inner {
+++    border-bottom: 1px solid #ccc;
+++  }
+++  .siteName {
+++    padding-block: 8px;
+++  }
+++}
+++
+++#page-main {
+++  padding-bottom: 50px;
+++  text-align: center;
+++
+++  .content-inner {
+++    > * {
+++      margin-top: 30px;
+++    }
+++  }
+++
+++  h1 {
+++    font-family: serif;
+++    font-weight: bold;
+++    font-size: 3.2rem;
+++  }
+++  pre {
+++    overflow: auto;
+++    padding: 8px;
+++    border: 1px solid #090;
+++    background: #cfc;
+++    text-align: left;
+++  }
+++}
+++
+++#page-footer {
+++  border-top: 1px solid #999;
+++  background: #f0f0f0;
+++
+++  .footerArea {
+++    padding: 4px 8px 8px;
+++
+++    .copyright {
+++      padding-top: 4px;
+++      text-align: center;
+++      font-family: Verdana, sans-serif;
+++      font-size: 1.4rem;
+++
+++      img {
+++        margin-top: -4px;
+++        vertical-align: middle;
+++      }
+++    }
+++  }
+++}
++diff --git a/public/assets/scss/pages/top.scss b/public/assets/scss/pages/top.scss
++new file mode 100644
++index 0000000..fd8f696
++--- /dev/null
+++++ b/public/assets/scss/pages/top.scss
++@@ -0,0 +1,1 @@
+++
++diff --git a/public/assets/scss/pages/subpage.scss b/public/assets/scss/pages/subpage.scss
++new file mode 100644
++index 0000000..fd8f696
++--- /dev/null
+++++ b/public/assets/scss/pages/subpage.scss
++@@ -0,0 +1,1 @@
+++
++diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
++new file mode 100644
++index 0000000..fd8f696
++--- /dev/null
+++++ b/public/assets/scss/components/Link.scss
++@@ -0,0 +1,1 @@
+++
++diff --git a/src/config/Util.mjs b/src/config/Util.mjs
++new file mode 100644
++index 0000000..9405025
++--- /dev/null
+++++ b/src/config/Util.mjs
++@@ -0,0 +1,77 @@
+++import fs from 'fs';
+++
+++const Util = {
+++  fs: {
+++    basePath(path) {
+++      return process.cwd() + '/' + Util.ltrim(path);
+++    },
+++    exist(path) {
+++      path = Util.fs.basePath(path);
+++      let isExist = false;
+++      try {
+++        const stat = fs.statSync(path);
+++        isExist = stat.isFile();
+++      } catch {}
+++      return isExist;
+++    },
+++    getComponents(filePath) {
+++      const content = fs.readFileSync(filePath, { encoding: 'utf8' });
+++      const matches = Array.from(content.matchAll(/^import\s*{?([^}]*)}?\s*from\s*['"]\/src\/components\b/mg));
+++      const components = [];
+++      matches.forEach((match) => {
+++        let str = match[1];
+++        str = str.replaceAll(/as\s+\w+/g, '');
+++        str = str.replaceAll(/\s+/g, '');
+++        Util.concat(components, str.split(','));
+++      });
+++      return components;
+++    },
+++  },
+++  HTML: {
+++    escape(str) {
+++      const map = {
+++        '&': '&amp;',
+++        "'": '&#039;',
+++        '"': '&quot;',
+++        '<': '&lt;',
+++        '>': '&gt;',
+++      };
+++      return str.replace(/[&'"<>]/g, (m) => map[m]);
+++    },
+++  },
+++  RegExp: {
+++    escape(str) {
+++      return str.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');
+++    },
+++  },
+++  concatStr(str, params) {
+++    if (str == null || str === '') return '';
+++    if (params.prefix != null) str = params.prefix + str;
+++    if (params.suffix != null) str = str + params.suffix;
+++    return str;
+++  },
+++  sprintf(format, ...args) {
+++    let p = 0;
+++    return format.replace(/%./g, function(m) {
+++      if (m === '%%') return '%';
+++      if (m === '%s') return args[p++];
+++      return m;
+++    });
+++  },
+++  ltrim(str, char = '/') {
+++    return str.replaceAll(new RegExp(Util.sprintf('^[%s]+', Util.RegExp.escape(char)), 'g'), '');
+++  },
+++  rtrim(str, char = '/') {
+++    return str.replaceAll(new RegExp(Util.sprintf('[%s]+$', Util.RegExp.escape(char)), 'g'), '');
+++  },
+++  Array(length) {
+++    const array = [];
+++    for (let i = 0; i < length; ++i) array.push(i + 1);
+++    return array;
+++  },
+++  concat(arrayA, arrayB) {
+++    arrayA.push(...arrayB);
+++  },
+++};
+++
+++export default Util;
++diff --git a/src/config/myExtIntegration.mjs b/src/config/myExtIntegration.mjs
++new file mode 100644
++index 0000000..0ec965a
++--- /dev/null
+++++ b/src/config/myExtIntegration.mjs
++@@ -0,0 +1,46 @@
+++import fs from 'fs';
+++import path from 'path';
+++import { globSync } from 'glob';
+++import beautify from 'js-beautify';
+++import { app, args, pages } from '/src/config/view';
+++
+++function htmlFormatter(filePath) {
+++  const config = {
+++    end_with_newline: true,
+++    extra_liners: [],
+++    indent_char: ' ',
+++    indent_empty_lines: false,
+++    indent_inner_html: false,
+++    indent_scripts: 'keep',
+++    indent_size: 2,
+++    wrap_line_length: 0,
+++  };
+++
+++  const inputHtml = fs.readFileSync(filePath, { encoding: 'utf8' });
+++  const outputHtml = beautify.html(inputHtml, config);
+++  fs.writeFileSync(filePath, outputHtml);
+++}
+++
+++function exportAstroConfigJson(projectDir) {
+++  const filePath = path.join(projectDir, 'astro.json');
+++  app.init();
+++  const obj = { args, pages };
+++  const json = JSON.stringify(obj, null, 2) + '\n';
+++  fs.writeFileSync(filePath, json);
+++}
+++
+++export default function() {
+++  return {
+++    name: 'myExt:integration',
+++    hooks: {
+++      'astro:build:generated': (options) => {
+++        const projectDir = path.dirname(options.dir.pathname);
+++        exportAstroConfigJson(projectDir);
+++
+++        globSync(`${options.dir.pathname}**/*.html`).forEach((filePath) => {
+++          htmlFormatter(filePath);
+++        });
+++      },
+++    },
+++  };
+++};
++diff --git a/src/config/view.mjs b/src/config/view.mjs
++new file mode 100644
++index 0000000..38eeae1
++--- /dev/null
+++++ b/src/config/view.mjs
++@@ -0,0 +1,97 @@
+++import Util from '/src/config/Util';
+++
+++export const args = {};
+++export const pages = {};
+++export const app = {
+++  setPages() {
+++    app.makePage('top', '/', 'Top');
+++    app.makePage('subpage', '/subpage', 'Sub page');
+++  },
+++  preInit() {
+++    args.siteName = '__SITE_NAME__';
+++    args.titleSuffix = '__TITLE_SUFFIX__';
+++    args.description = '__DESCRIPTION__';
+++    args.twitterIdWithAtMark = '__@TWITTER_ID__';
+++    args.lang = 'ja';
+++    args.locale = 'ja_JP';
+++    args.og_image = 'img/global/og.png';
+++  },
+++  postInit(Astro, pageArgs) {
+++    app.Astro = Astro;
+++    app.args = pageArgs ?? {};
+++
+++    // Overwrite args parameters
+++    Object.entries(app.args).forEach(([key, value]) => {
+++      args[key] = value;
+++    });
+++    // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
+++    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
+++
+++    args.og_type = args.path === '/' ? 'website' : 'article';
+++    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
+++
+++    app.autoConfig();
+++  },
+++  autoConfig() {
+++    app.url = app.Astro.url;
+++    args.domain = app.url.hostname;
+++    args.path = app.url.pathname.replace(/\.html$/, '');
+++    args.url = app.url.origin + args.path;
+++    args.siteRootUrl = app.url.origin;
+++    args.siteRootUrlWithoutProtocol = app.url.host;
+++    args.urlWithoutProtocol = app.url.host + args.path;
+++
+++    const selfRoute = route(args.path);
+++    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
+++    args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
+++
+++    args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
+++      const value = [];
+++      const willAdd = (dir, file) => {
+++        const path = Util.sprintf('%s/%s.%s', dir, file, ext);
+++        const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
+++        if (fileExist) value.push(path);
+++      };
+++      if (args.page.key) willAdd('pages', args.page.key);
+++      args.page.useComponents.forEach((componentName) => {
+++        willAdd('components', componentName);
+++      });
+++      return [ext, value];
+++    }));
+++  },
+++  makePage(key, argRoute, label) {
+++    pages[key] = { key, route: route(argRoute), label };
+++  },
+++  init(Astro, pageArgs) {
+++    app.setPages();
+++    app.preInit();
+++    if (Astro) app.postInit(Astro, pageArgs);
+++  },
+++};
+++
+++export const rootPath = (path) => {
+++  path = '/' + Util.ltrim(path);
+++  return path;
+++};
+++
+++export const assets = (path, cacheBuster = false) => {
+++  path = rootPath('assets/' + Util.ltrim(path));
+++  if (cacheBuster) path += '?' + Date.now();
+++  return path;
+++};
+++
+++export const assetsUrl = (path, cacheBuster = false) => {
+++  return Util.rtrim(app.Astro.url.origin) + assets(path, cacheBuster);
+++};
+++
+++export const isAbsUrl = (url) => {
+++  return /^(?:\w+:)?\/\//.test(url);
+++};
+++
+++export const img = (path) => {
+++  return assets('img/' + Util.ltrim(path));
+++};
+++
+++export const route = (path) => {
+++  return Util.rtrim(rootPath(String(path))) + '/';
+++};
++diff --git a/src/components/Link.astro b/src/components/Link.astro
++new file mode 100644
++index 0000000..f645ff8
++--- /dev/null
+++++ b/src/components/Link.astro
++@@ -0,0 +1,8 @@
+++---
+++import { isAbsUrl } from '/src/config/view';
+++let { url, label } = Astro.props;
+++if (label === undefined) label = url;
+++const target = isAbsUrl(url) ? '_blank' : undefined;
+++---
+++
+++<a href={url} target={target}>{label}</a>
++diff --git a/src/components/index.tsx b/src/components/index.tsx
++new file mode 100644
++index 0000000..ddd260f
++--- /dev/null
+++++ b/src/components/index.tsx
++@@ -0,0 +1 @@
+++export { default as Link } from './Link.astro';
++diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
++new file mode 100644
++index 0000000..3dc7e73
++--- /dev/null
+++++ b/src/layouts/Layout.astro
++@@ -0,0 +1,49 @@
+++---
+++import Header from '/src/layouts/Header.astro';
+++import Footer from '/src/layouts/Footer.astro';
+++import Util from '/src/config/Util';
+++import { args, assets, img } from '/src/config/view';
+++---
+++
+++<!DOCTYPE html>
+++<html lang={ args.lang } data-app-path={ args.path } data-key={ args.page.key } data-route={ args.page.route }>
+++  <head>
+++    <meta charset="UTF-8" />
+++    <title>{ args.title }</title>
+++    <meta name="description" content={ args.description } />
+++
+++    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+++    <meta name="format-detection" content="telephone=no, email=no, address=no" />
+++    <meta name="generator" content={ Astro.generator } />
+++
+++    <meta property="og:locale" content={ args.locale } />
+++    <meta property="og:type" content={ args.og_type } />
+++    <meta property="og:site_name" content={ args.siteName } />
+++    <meta property="og:title" content={ args.title } />
+++    <meta property="og:description" content={ args.description } />
+++    <meta property="og:image" content={ args.og_image } />
+++    <meta property="og:url" content={ args.url } />
+++
+++    <meta name="twitter:card" content="summary_large_image" />
+++    <meta name="twitter:title" content={ args.title } />
+++    <meta name="twitter:description" content={ args.description } />
+++    <meta name="twitter:site" content={ args.twitterIdWithAtMark } />
+++
+++    <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
+++    <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
+++    <script src={ assets('js/global/base.js', true) }></script>{
+++      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n'
+++    }{
+++      args.assetList.css.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
+++    }{
+++      args.assetList.js.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
+++    }
+++  </head>
+++  <body>
+++    <div id="page-container">
+++      <header id="page-header"><Header /></header>
+++      <main id="page-main"><slot /></main>
+++      <footer id="page-footer"><Footer /></footer>
+++    </div>
+++  </body>
+++</html>
++diff --git a/src/layouts/Header.astro b/src/layouts/Header.astro
++new file mode 100644
++index 0000000..3dc7e73
++--- /dev/null
+++++ b/src/layouts/Header.astro
++@@ -0,0 +1,8 @@
+++---
+++import { Link } from '/src/components';
+++import { args, pages, img } from '/src/config/view';
+++---
+++
+++<div class="content-inner">
+++  <h1 class="siteName"><a href={ pages.top.route }><img src={ img('global/logo.png') } alt={ args.siteName } width="100" height="100"></a></h1>
+++</div>
++diff --git a/src/layouts/Footer.astro b/src/layouts/Footer.astro
++new file mode 100644
++index 0000000..3dc7e73
++--- /dev/null
+++++ b/src/layouts/Footer.astro
++@@ -0,0 +1,10 @@
+++---
+++import { Link } from '/src/components';
+++import { args, pages, img } from "/src/config/view";
+++---
+++
+++<div class="content-inner">
+++  <div class="footerArea">
+++    <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt={ args.siteName } width="30" height="30"> <span class="wbr">Powered by <Link url="https://github.com/debiru/astro" /></span></p>
+++  </div>
+++</div>
++diff --git a/src/pages/index.astro b/src/pages/index.astro
++new file mode 100644
++index 0000000..624aae9
++--- /dev/null
+++++ b/src/pages/index.astro
++@@ -0,0 +1,21 @@
+++---
+++import { Link } from '/src/components';
+++import Layout from '/src/layouts/Layout.astro';
+++import Util from '/src/config/Util';
+++import { app, args, pages, assets, img } from '/src/config/view';
+++const pageArgs = {};
+++app.init(Astro, pageArgs);
+++const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
+++const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then(response => response.text());
+++---
+++
+++<Layout>
+++  <div class="content-inner">
+++    <h1>Welcome to Astro Site</h1>
+++    <p><Link url={ pages.subpage.route } label={ pages.subpage.label } /></p>
+++    <h1>Astro Starter Kit</h1>
+++    <p><Link url="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
+++    <p><Link url="https://qiita.com/debiru/items/a5ac8219b696045f88f5" label="10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ" /></p>
+++    <pre>{ starterKitContent }</pre>
+++  </div>
+++</Layout>
++diff --git a/src/pages/subpage/index.astro b/src/pages/subpage/index.astro
++new file mode 100644
++index 0000000..e474d31
++--- /dev/null
+++++ b/src/pages/subpage/index.astro
++@@ -0,0 +1,19 @@
+++---
+++import { Link } from '/src/components';
+++import Layout from '/src/layouts/Layout.astro';
+++import Util from '/src/config/Util';
+++import { app, args, pages, assets, img } from '/src/config/view';
+++const pageArgs = {
+++  title: 'Sub page Title',
+++  description: 'Sub page description',
+++  og_image: 'img/pages/subpage/og.png',
+++};
+++app.init(Astro, pageArgs);
+++---
+++
+++<Layout>
+++  <div class="content-inner">
+++    <h1>Sub page</h1>
+++    <p><Link url={ pages.top.route } label={ pages.top.label } /></p>
+++  </div>
+++</Layout>
+diff --git a/src/assets/astro.svg b/src/assets/astro.svg
+deleted file mode 100644
+index 8cf8fb0..0000000
+--- a/src/assets/astro.svg
++++ /dev/null
+@@ -1 +0,0 @@
+-<svg xmlns="http://www.w3.org/2000/svg" fill="none" width="115" height="48"><path fill="#17191E" d="M7.77 36.35C6.4 35.11 6 32.51 6.57 30.62c.99 1.2 2.35 1.57 3.75 1.78 2.18.33 4.31.2 6.33-.78.23-.12.44-.27.7-.42.18.55.23 1.1.17 1.67a4.56 4.56 0 0 1-1.94 3.23c-.43.32-.9.61-1.34.91-1.38.94-1.76 2.03-1.24 3.62l.05.17a3.63 3.63 0 0 1-1.6-1.38 3.87 3.87 0 0 1-.63-2.1c0-.37 0-.74-.05-1.1-.13-.9-.55-1.3-1.33-1.32a1.56 1.56 0 0 0-1.63 1.26c0 .06-.03.12-.05.2Z"/><path fill="url(#a)" d="M7.77 36.35C6.4 35.11 6 32.51 6.57 30.62c.99 1.2 2.35 1.57 3.75 1.78 2.18.33 4.31.2 6.33-.78.23-.12.44-.27.7-.42.18.55.23 1.1.17 1.67a4.56 4.56 0 0 1-1.94 3.23c-.43.32-.9.61-1.34.91-1.38.94-1.76 2.03-1.24 3.62l.05.17a3.63 3.63 0 0 1-1.6-1.38 3.87 3.87 0 0 1-.63-2.1c0-.37 0-.74-.05-1.1-.13-.9-.55-1.3-1.33-1.32a1.56 1.56 0 0 0-1.63 1.26c0 .06-.03.12-.05.2Z"/><path fill="#17191E" d="M.02 30.31s4.02-1.95 8.05-1.95l3.04-9.4c.11-.45.44-.76.82-.76.37 0 .7.31.82.76l3.04 9.4c4.77 0 8.05 1.95 8.05 1.95L17 11.71c-.2-.56-.53-.91-.98-.91H7.83c-.44 0-.76.35-.97.9L.02 30.31Zm42.37-5.97c0 1.64-2.05 2.62-4.88 2.62-1.85 0-2.5-.45-2.5-1.41 0-1 .8-1.49 2.65-1.49 1.67 0 3.09.03 4.73.23v.05Zm.03-2.04a21.37 21.37 0 0 0-4.37-.36c-5.32 0-7.82 1.25-7.82 4.18 0 3.04 1.71 4.2 5.68 4.2 3.35 0 5.63-.84 6.46-2.92h.14c-.03.5-.05 1-.05 1.4 0 1.07.18 1.16 1.06 1.16h4.15a16.9 16.9 0 0 1-.36-4c0-1.67.06-2.93.06-4.62 0-3.45-2.07-5.64-8.56-5.64-2.8 0-5.9.48-8.26 1.19.22.93.54 2.83.7 4.06 2.04-.96 4.95-1.37 7.2-1.37 3.11 0 3.97.71 3.97 2.15v.57Zm11.37 3c-.56.07-1.33.07-2.12.07-.83 0-1.6-.03-2.12-.1l-.02.58c0 2.85 1.87 4.52 8.45 4.52 6.2 0 8.2-1.64 8.2-4.55 0-2.74-1.33-4.09-7.2-4.39-4.58-.2-4.99-.7-4.99-1.28 0-.66.59-1 3.65-1 3.18 0 4.03.43 4.03 1.35v.2a46.13 46.13 0 0 1 4.24.03l.02-.55c0-3.36-2.8-4.46-8.2-4.46-6.08 0-8.13 1.49-8.13 4.39 0 2.6 1.64 4.23 7.48 4.48 4.3.14 4.77.62 4.77 1.28 0 .7-.7 1.03-3.71 1.03-3.47 0-4.35-.48-4.35-1.47v-.13Zm19.82-12.05a17.5 17.5 0 0 1-6.24 3.48c.03.84.03 2.4.03 3.24l1.5.02c-.02 1.63-.04 3.6-.04 4.9 0 3.04 1.6 5.32 6.58 5.32 2.1 0 3.5-.23 5.23-.6a43.77 43.77 0 0 1-.46-4.13c-1.03.34-2.34.53-3.78.53-2 0-2.82-.55-2.82-2.13 0-1.37 0-2.65.03-3.84 2.57.02 5.13.07 6.64.11-.02-1.18.03-2.9.1-4.04-2.2.04-4.65.07-6.68.07l.07-2.93h-.16Zm13.46 6.04a767.33 767.33 0 0 1 .07-3.18H82.6c.07 1.96.07 3.98.07 6.92 0 2.95-.03 4.99-.07 6.93h5.18c-.09-1.37-.11-3.68-.11-5.65 0-3.1 1.26-4 4.12-4 1.33 0 2.28.16 3.1.46.03-1.16.26-3.43.4-4.43-.86-.25-1.81-.41-2.96-.41-2.46-.03-4.26.98-5.1 3.38l-.17-.02Zm22.55 3.65c0 2.5-1.8 3.66-4.64 3.66-2.81 0-4.61-1.1-4.61-3.66s1.82-3.52 4.61-3.52c2.82 0 4.64 1.03 4.64 3.52Zm4.71-.11c0-4.96-3.87-7.18-9.35-7.18-5.5 0-9.23 2.22-9.23 7.18 0 4.94 3.49 7.59 9.21 7.59 5.77 0 9.37-2.65 9.37-7.6Z"/><defs><linearGradient id="a" x1="6.33" x2="19.43" y1="40.8" y2="34.6" gradientUnits="userSpaceOnUse"><stop stop-color="#D83333"/><stop offset="1" stop-color="#F041FF"/></linearGradient></defs></svg>
+diff --git a/src/assets/background.svg b/src/assets/background.svg
+deleted file mode 100644
+index 4b2be0a..0000000
+--- a/src/assets/background.svg
++++ /dev/null
+@@ -1 +0,0 @@
+-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1024" fill="none"><path fill="url(#a)" fill-rule="evenodd" d="M-217.58 475.75c91.82-72.02 225.52-29.38 341.2-44.74C240 415.56 372.33 315.14 466.77 384.9c102.9 76.02 44.74 246.76 90.31 366.31 29.83 78.24 90.48 136.14 129.48 210.23 57.92 109.99 169.67 208.23 155.9 331.77-13.52 121.26-103.42 264.33-224.23 281.37-141.96 20.03-232.72-220.96-374.06-196.99-151.7 25.73-172.68 330.24-325.85 315.72-128.6-12.2-110.9-230.73-128.15-358.76-12.16-90.14 65.87-176.25 44.1-264.57-26.42-107.2-167.12-163.46-176.72-273.45-10.15-116.29 33.01-248.75 124.87-320.79Z" clip-rule="evenodd" style="opacity:.154"/><path fill="url(#b)" fill-rule="evenodd" d="M1103.43 115.43c146.42-19.45 275.33-155.84 413.5-103.59 188.09 71.13 409 212.64 407.06 413.88-1.94 201.25-259.28 278.6-414.96 405.96-130 106.35-240.24 294.39-405.6 265.3-163.7-28.8-161.93-274.12-284.34-386.66-134.95-124.06-436-101.46-445.82-284.6-9.68-180.38 247.41-246.3 413.54-316.9 101.01-42.93 207.83 21.06 316.62 6.61Z" clip-rule="evenodd" style="opacity:.154"/><defs><linearGradient id="b" x1="373" x2="1995.44" y1="1100" y2="118.03" gradientUnits="userSpaceOnUse"><stop stop-color="#D83333"/><stop offset="1" stop-color="#F041FF"/></linearGradient><linearGradient id="a" x1="107.37" x2="1130.66" y1="1993.35" y2="1026.31" gradientUnits="userSpaceOnUse"><stop stop-color="#3245FF"/><stop offset="1" stop-color="#BC52EE"/></linearGradient></defs></svg>
+diff --git a/src/components/Link.astro b/src/components/Link.astro
+new file mode 100644
+index 0000000..37ea5e1
+--- /dev/null
++++ b/src/components/Link.astro
+@@ -0,0 +1,14 @@
++---
++import Util from '/src/config/Util';
++import { getIsAbsUrl } from '/src/config/view';
++let { page, href, children } = await Util.getPropsAsync(Astro);
++if (page) {
++  href = page.route;
++  if (children == null) children = page.label;
++}
++if (children == null) children = href;
++const isAbsUrl = getIsAbsUrl(href);
++const target = isAbsUrl ? '_blank' : undefined;
++---
++
++<a href={href} target={target}><Fragment set:html={children} /></a>
+diff --git a/src/components/Welcome.astro b/src/components/Welcome.astro
+deleted file mode 100644
+index 6b7b9c7..0000000
+--- a/src/components/Welcome.astro
++++ /dev/null
+@@ -1,209 +0,0 @@
+----
+-import astroLogo from '../assets/astro.svg';
+-import background from '../assets/background.svg';
+----
+-
+-<div id="container">
+-	<img id="background" src={background.src} alt="" fetchpriority="high" />
+-	<main>
+-		<section id="hero">
+-			<a href="https://astro.build"
+-				><img src={astroLogo.src} width="115" height="48" alt="Astro Homepage" /></a
+-			>
+-			<h1>
+-				To get started, open the <code><pre>src/pages</pre></code> directory in your project.
+-			</h1>
+-			<section id="links">
+-				<a class="button" href="https://docs.astro.build">Read our docs</a>
+-				<a href="https://astro.build/chat"
+-					>Join our Discord <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36"
+-						><path
+-							fill="currentColor"
+-							d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"
+-						></path></svg
+-					>
+-				</a>
+-			</section>
+-		</section>
+-	</main>
+-
+-	<a href="https://astro.build/blog/astro-5/" id="news" class="box">
+-		<svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"
+-			><path
+-				d="M24.667 12c1.333 1.414 2 3.192 2 5.334 0 4.62-4.934 5.7-7.334 12C18.444 28.567 18 27.456 18 26c0-4.642 6.667-7.053 6.667-14Zm-5.334-5.333c1.6 1.65 2.4 3.43 2.4 5.333 0 6.602-8.06 7.59-6.4 17.334C13.111 27.787 12 25.564 12 22.666c0-4.434 7.333-8 7.333-16Zm-6-5.333C15.111 3.555 16 5.556 16 7.333c0 8.333-11.333 10.962-5.333 22-3.488-.774-6-4-6-8 0-8.667 8.666-10 8.666-20Z"
+-				fill="#111827"></path></svg
+-		>
+-		<h2>What's New in Astro 5.0?</h2>
+-		<p>
+-			From content layers to server islands, click to learn more about the new features and
+-			improvements in Astro 5.0
+-		</p>
+-	</a>
+-</div>
+-
+-<style>
+-	#background {
+-		position: fixed;
+-		top: 0;
+-		left: 0;
+-		width: 100%;
+-		height: 100%;
+-		z-index: -1;
+-		filter: blur(100px);
+-	}
+-
+-	#container {
+-		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+-		height: 100%;
+-	}
+-
+-	main {
+-		height: 100%;
+-		display: flex;
+-		justify-content: center;
+-	}
+-
+-	#hero {
+-		display: flex;
+-		align-items: start;
+-		flex-direction: column;
+-		justify-content: center;
+-		padding: 16px;
+-	}
+-
+-	h1 {
+-		font-size: 22px;
+-		margin-top: 0.25em;
+-	}
+-
+-	#links {
+-		display: flex;
+-		gap: 16px;
+-	}
+-
+-	#links a {
+-		display: flex;
+-		align-items: center;
+-		padding: 10px 12px;
+-		color: #111827;
+-		text-decoration: none;
+-		transition: color 0.2s;
+-	}
+-
+-	#links a:hover {
+-		color: rgb(78, 80, 86);
+-	}
+-
+-	#links a svg {
+-		height: 1em;
+-		margin-left: 8px;
+-	}
+-
+-	#links a.button {
+-		color: white;
+-		background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);
+-		box-shadow:
+-			inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+-			inset 0 -2px 0 rgba(0, 0, 0, 0.24);
+-		border-radius: 10px;
+-	}
+-
+-	#links a.button:hover {
+-		color: rgb(230, 230, 230);
+-		box-shadow: none;
+-	}
+-
+-	pre {
+-		font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+-			'DejaVu Sans Mono', monospace;
+-		font-weight: normal;
+-		background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
+-		-webkit-background-clip: text;
+-		-webkit-text-fill-color: transparent;
+-		background-clip: text;
+-		margin: 0;
+-	}
+-
+-	h2 {
+-		margin: 0 0 1em;
+-		font-weight: normal;
+-		color: #111827;
+-		font-size: 20px;
+-	}
+-
+-	p {
+-		color: #4b5563;
+-		font-size: 16px;
+-		line-height: 24px;
+-		letter-spacing: -0.006em;
+-		margin: 0;
+-	}
+-
+-	code {
+-		display: inline-block;
+-		background:
+-			linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
+-			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
+-		border-radius: 8px;
+-		border: 1px solid transparent;
+-		padding: 6px 8px;
+-	}
+-
+-	.box {
+-		padding: 16px;
+-		background: rgba(255, 255, 255, 1);
+-		border-radius: 16px;
+-		border: 1px solid white;
+-	}
+-
+-	#news {
+-		position: absolute;
+-		bottom: 16px;
+-		right: 16px;
+-		max-width: 300px;
+-		text-decoration: none;
+-		transition: background 0.2s;
+-		backdrop-filter: blur(50px);
+-	}
+-
+-	#news:hover {
+-		background: rgba(255, 255, 255, 0.55);
+-	}
+-
+-	@media screen and (max-height: 368px) {
+-		#news {
+-			display: none;
+-		}
+-	}
+-
+-	@media screen and (max-width: 768px) {
+-		#container {
+-			display: flex;
+-			flex-direction: column;
+-		}
+-
+-		#hero {
+-			display: block;
+-			padding-top: 10%;
+-		}
+-
+-		#links {
+-			flex-wrap: wrap;
+-		}
+-
+-		#links a.button {
+-			padding: 14px 18px;
+-		}
+-
+-		#news {
+-			right: 16px;
+-			left: 16px;
+-			bottom: 2.5rem;
+-			max-width: 100%;
+-		}
+-
+-		h1 {
+-			line-height: 1.5;
+-		}
+-	}
+-</style>
+diff --git a/src/components/index.tsx b/src/components/index.tsx
+new file mode 100644
+index 0000000..ddd260f
+--- /dev/null
++++ b/src/components/index.tsx
+@@ -0,0 +1 @@
++export { default as Link } from './Link.astro';
 diff --git a/src/config/Util.mjs b/src/config/Util.mjs
 new file mode 100644
-index 0000000..9405025
+index 0000000..4cc788b
 --- /dev/null
 +++ b/src/config/Util.mjs
-@@ -0,0 +1,77 @@
+@@ -0,0 +1,104 @@
++import astroConfig from '/astro.config';
 +import fs from 'fs';
 +
 +const Util = {
++  astro: {
++    get(key) {
++      const value = astroConfig[key];
++      if (key === 'base') return '/' + Util.trim(value ?? '');
++      return value;
++    },
++    removeBase(path) {
++      const base = Util.astro.get('base');
++      if (base === '/') return path;
++      return path.startsWith(base) ? path.slice(base.length) || '/' : path;
++    },
++  },
 +  fs: {
 +    basePath(path) {
 +      return process.cwd() + '/' + Util.ltrim(path);
@@ -430,18 +2203,29 @@ index 0000000..9405025
 +      } catch {}
 +      return isExist;
 +    },
-+    getComponents(filePath) {
++    getImportVariables(filePath) {
 +      const content = fs.readFileSync(filePath, { encoding: 'utf8' });
-+      const matches = Array.from(content.matchAll(/^import\s*{?([^}]*)}?\s*from\s*['"]\/src\/components\b/mg));
-+      const components = [];
++      const matches = Array.from(content.matchAll(/^import\s*({[^}]+}|\S+)\s*from\s*['"](?:\/src\/)?([^'"]+)/gm));
++      const importVariables = {};
 +      matches.forEach((match) => {
-+        let str = match[1];
-+        str = str.replaceAll(/as\s+\w+/g, '');
-+        str = str.replaceAll(/\s+/g, '');
-+        Util.concat(components, str.split(','));
++        const dirName = match[2];
++        let variables = match[1];
++        variables = variables.replaceAll(/as\s+\w+/g, '');
++        variables = variables.replaceAll(/[\s{}]+/g, '');
++        importVariables[dirName] ??= [];
++        Util.concat(importVariables[dirName], variables.split(','));
 +      });
-+      return components;
++      return importVariables;
 +    },
++  },
++  async getPropsAsync(Astro) {
++    const props = Astro.props;
++    const slotKeys = Object.keys(Astro.slots);
++    const results = await Promise.all(slotKeys.map((slotKey) => Astro.slots.render(slotKey)));
++    props.slot = {};
++    slotKeys.forEach((slotKey, idx) => (props.slot[slotKey] = results[idx]));
++    props.children = props.slot['default'];
++    return props;
 +  },
 +  HTML: {
 +    escape(str) {
@@ -468,7 +2252,7 @@ index 0000000..9405025
 +  },
 +  sprintf(format, ...args) {
 +    let p = 0;
-+    return format.replace(/%./g, function(m) {
++    return format.replace(/%./g, function (m) {
 +      if (m === '%%') return '%';
 +      if (m === '%s') return args[p++];
 +      return m;
@@ -479,6 +2263,9 @@ index 0000000..9405025
 +  },
 +  rtrim(str, char = '/') {
 +    return str.replaceAll(new RegExp(Util.sprintf('[%s]+$', Util.RegExp.escape(char)), 'g'), '');
++  },
++  trim(str, char = '/') {
++    return Util.rtrim(Util.ltrim(str, char), char);
 +  },
 +  Array(length) {
 +    const array = [];
@@ -493,7 +2280,7 @@ index 0000000..9405025
 +export default Util;
 diff --git a/src/config/myExtIntegration.mjs b/src/config/myExtIntegration.mjs
 new file mode 100644
-index 0000000..0ec965a
+index 0000000..363f1cc
 --- /dev/null
 +++ b/src/config/myExtIntegration.mjs
 @@ -0,0 +1,46 @@
@@ -528,7 +2315,7 @@ index 0000000..0ec965a
 +  fs.writeFileSync(filePath, json);
 +}
 +
-+export default function() {
++export default function () {
 +  return {
 +    name: 'myExt:integration',
 +    hooks: {
@@ -542,13 +2329,13 @@ index 0000000..0ec965a
 +      },
 +    },
 +  };
-+};
++}
 diff --git a/src/config/view.mjs b/src/config/view.mjs
 new file mode 100644
-index 0000000..38eeae1
+index 0000000..19a902d
 --- /dev/null
 +++ b/src/config/view.mjs
-@@ -0,0 +1,97 @@
+@@ -0,0 +1,105 @@
 +import Util from '/src/config/Util';
 +
 +export const args = {};
@@ -556,19 +2343,18 @@ index 0000000..38eeae1
 +export const app = {
 +  setPages() {
 +    app.makePage('top', '/', 'Top');
-+    app.makePage('subpage', '/subpage', 'Sub page');
++    app.makePage('subpage', '/subpage', 'Subpage');
 +  },
 +  preInit() {
-+    args.siteName = '__SITE_NAME__';
-+    args.titleSuffix = '__TITLE_SUFFIX__';
-+    args.description = '__DESCRIPTION__';
-+    args.twitterIdWithAtMark = '__@TWITTER_ID__';
++    args.siteName = 'Astro Starter Kit';
++    args.titleSuffix = 'https://github.com/debiru/astro';
++    args.description = '10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ';
++    args.twitterIdWithAtMark = '@debiru_R';
 +    args.lang = 'ja';
 +    args.locale = 'ja_JP';
 +    args.og_image = 'img/global/og.png';
 +  },
-+  postInit(Astro, pageArgs) {
-+    app.Astro = Astro;
++  postInit(pageArgs) {
 +    app.args = pageArgs ?? {};
 +
 +    // Overwrite args parameters
@@ -576,14 +2362,13 @@ index 0000000..38eeae1
 +      args[key] = value;
 +    });
 +    // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
-+    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | '});
++    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | ' });
 +
 +    args.og_type = args.path === '/' ? 'website' : 'article';
-+    if (!isAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
-+
-+    app.autoConfig();
++    if (!getIsAbsUrl(args.og_image)) args.og_image = assetsUrl(args.og_image, true);
 +  },
-+  autoConfig() {
++  setConfig(Astro) {
++    app.Astro = Astro;
 +    app.url = app.Astro.url;
 +    args.domain = app.url.hostname;
 +    args.path = app.url.pathname.replace(/\.html$/, '');
@@ -592,50 +2377,60 @@ index 0000000..38eeae1
 +    args.siteRootUrlWithoutProtocol = app.url.host;
 +    args.urlWithoutProtocol = app.url.host + args.path;
 +
-+    const selfRoute = route(args.path);
-+    args.page = Object.values(pages).find((page) => page.route === selfRoute) ?? {};
-+    args.page.useComponents = Util.fs.getComponents(app.Astro.self.moduleId);
++    args.page = Object.values(pages).find((page) => page.route === args.path) ?? {};
++    args.page.importVariables = Util.fs.getImportVariables(app.Astro.self.moduleId);
 +
-+    args.assetList = Object.fromEntries(['css', 'js'].map((ext) => {
-+      const value = [];
-+      const willAdd = (dir, file) => {
-+        const path = Util.sprintf('%s/%s.%s', dir, file, ext);
-+        const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
-+        if (fileExist) value.push(path);
-+      };
-+      if (args.page.key) willAdd('pages', args.page.key);
-+      args.page.useComponents.forEach((componentName) => {
-+        willAdd('components', componentName);
-+      });
-+      return [ext, value];
-+    }));
++    args.prevent = {
++      css: {},
++      js: {},
++    };
++    args.assetList = Object.fromEntries(
++      ['css', 'js'].map((ext) => {
++        const value = [];
++        const willAdd = (dir, file) => {
++          const path = Util.sprintf('%s/%s.%s', dir, file, ext);
++          const fileExist = Util.fs.exist(Util.sprintf('public/assets/%s/%s', ext, path));
++          if (fileExist) value.push(path);
++        };
++        if (args.page.key) willAdd('pages', args.page.key);
++        Object.entries(args.page.importVariables).forEach(([dirName, variableName]) => {
++          willAdd(dirName, variableName);
++        });
++        return [ext, value];
++      })
++    );
 +  },
 +  makePage(key, argRoute, label) {
-+    pages[key] = { key, route: route(argRoute), label };
++    const page = { key, route: route(argRoute), label };
++    page.appRoute = Util.astro.removeBase(page.route);
++    pages[key] = page;
 +  },
-+  init(Astro, pageArgs) {
++  init(Astro) {
 +    app.setPages();
++    if (Astro) app.setConfig(Astro);
 +    app.preInit();
-+    if (Astro) app.postInit(Astro, pageArgs);
++  },
++  setPageConfig(pageArgs) {
++    app.postInit(pageArgs);
 +  },
 +};
 +
-+export const rootPath = (path) => {
-+  path = '/' + Util.ltrim(path);
++export const rootPath = (path, cacheBuster = false) => {
++  const base = Util.rtrim(Util.astro.get('base')) + '/';
++  path = base + Util.ltrim(path);
++  if (cacheBuster) path += '?' + Date.now();
 +  return path;
 +};
 +
 +export const assets = (path, cacheBuster = false) => {
-+  path = rootPath('assets/' + Util.ltrim(path));
-+  if (cacheBuster) path += '?' + Date.now();
-+  return path;
++  return rootPath('assets/' + Util.ltrim(path), cacheBuster);
 +};
 +
 +export const assetsUrl = (path, cacheBuster = false) => {
 +  return Util.rtrim(app.Astro.url.origin) + assets(path, cacheBuster);
 +};
 +
-+export const isAbsUrl = (url) => {
++export const getIsAbsUrl = (url) => {
 +  return /^(?:\w+:)?\/\//.test(url);
 +};
 +
@@ -646,42 +2441,63 @@ index 0000000..38eeae1
 +export const route = (path) => {
 +  return Util.rtrim(rootPath(String(path))) + '/';
 +};
-diff --git a/src/components/Link.astro b/src/components/Link.astro
+diff --git a/src/layouts/Footer.astro b/src/layouts/Footer.astro
 new file mode 100644
-index 0000000..f645ff8
+index 0000000..bed1fd3
 --- /dev/null
-+++ b/src/components/Link.astro
-@@ -0,0 +1,8 @@
++++ b/src/layouts/Footer.astro
+@@ -0,0 +1,10 @@
 +---
-+import { isAbsUrl } from '/src/config/view';
-+let { url, label } = Astro.props;
-+if (label === undefined) label = url;
-+const target = isAbsUrl(url) ? '_blank' : undefined;
++import { Link } from '/src/components';
++import { args, pages, img } from '/src/config/view';
 +---
 +
-+<a href={url} target={target}>{label}</a>
-diff --git a/src/components/index.tsx b/src/components/index.tsx
++<div class="content-inner">
++  <div class="footerArea">
++    <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={img('global/logo.png')} alt={args.siteName} width="30" height="30" /> <span class="wbr">Powered by <Link href="https://github.com/debiru/astro" /></span></p>
++  </div>
++</div>
+diff --git a/src/layouts/Header.astro b/src/layouts/Header.astro
 new file mode 100644
-index 0000000..ddd260f
+index 0000000..6c73281
 --- /dev/null
-+++ b/src/components/index.tsx
-@@ -0,0 +1 @@
-+export { default as Link } from './Link.astro';
-diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
-new file mode 100644
-index 0000000..3dc7e73
---- /dev/null
-+++ b/src/layouts/Layout.astro
-@@ -0,0 +1,49 @@
++++ b/src/layouts/Header.astro
+@@ -0,0 +1,8 @@
 +---
-+import Header from '/src/layouts/Header.astro';
-+import Footer from '/src/layouts/Footer.astro';
++import { Link } from '/src/components';
++import { args, pages, img } from '/src/config/view';
++---
++
++<div class="content-inner">
++  <h1 class="siteName"><a href={pages.top.route}><img src={img('global/logo.png')} alt={args.siteName} width="100" height="100" /></a></h1>
++</div>
+diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
+index e455c61..2153e77 100644
+--- a/src/layouts/Layout.astro
++++ b/src/layouts/Layout.astro
+@@ -1,22 +1,54 @@
+-<!doctype html>
+-<html lang="en">
+-	<head>
+-		<meta charset="UTF-8" />
+-		<meta name="viewport" content="width=device-width" />
+-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+-		<meta name="generator" content={Astro.generator} />
+-		<title>Astro Basics</title>
+-	</head>
+-	<body>
+-		<slot />
+-	</body>
+-</html>
++---
 +import Util from '/src/config/Util';
-+import { args, assets, img } from '/src/config/view';
++import { args, rootPath, assets, img } from '/src/config/view';
++import Header from './Header.astro';
++import Footer from './Footer.astro';
 +---
 +
 +<!DOCTYPE html>
-+<html lang={ args.lang } data-app-path={ args.path } data-key={ args.page.key } data-route={ args.page.route }>
++<html lang={ args.lang } data-key={ args.page.key } data-route={ args.page.route } data-app-route={ args.page.appRoute }>
 +  <head>
 +    <meta charset="UTF-8" />
 +    <title>{ args.title }</title>
@@ -690,7 +2506,15 @@ index 0000000..3dc7e73
 +    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 +    <meta name="format-detection" content="telephone=no, email=no, address=no" />
 +    <meta name="generator" content={ Astro.generator } />
-+
+ 
+-<style>
+-	html,
+-	body {
+-		margin: 0;
+-		width: 100%;
+-		height: 100%;
+-	}
+-</style>
 +    <meta property="og:locale" content={ args.locale } />
 +    <meta property="og:type" content={ args.og_type } />
 +    <meta property="og:site_name" content={ args.siteName } />
@@ -704,103 +2528,113 @@ index 0000000..3dc7e73
 +    <meta name="twitter:description" content={ args.description } />
 +    <meta name="twitter:site" content={ args.twitterIdWithAtMark } />
 +
-+    <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
-+    <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
++    <link rel="icon" type="image/vnd.microsoft.icon" href={ rootPath('favicon.ico', true) } />{
++      !args.prevent.css.reset && <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
++    }{
++      !args.prevent.css.style && <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
++    }
 +    <script src={ assets('js/global/base.js', true) }></script>{
-+      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n'
++      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n\n'
 +    }{
-+      args.assetList.css.map((css) => <Fragment set:html={ Util.sprintf('\n<link rel="stylesheet" href="%s">', assets('css/' + Util.ltrim(css), true)) } />)
++      args.assetList.css.map((css) => <link rel="stylesheet" href={ assets('css/' + Util.ltrim(css), true) } />)
 +    }{
-+      args.assetList.js.map((js) => <Fragment set:html={ Util.sprintf('\n<script src="%s"></script>', assets('js/' + Util.ltrim(js), true)) } />)
++      args.assetList.js.map((js) => <script src={ assets('js/' + Util.ltrim(js), true) } />)
 +    }
 +  </head>
 +  <body>
-+    <div id="page-container">
-+      <header id="page-header"><Header /></header>
-+      <main id="page-main"><slot /></main>
-+      <footer id="page-footer"><Footer /></footer>
++    <div id="page-container">{
++        !args.prevent.header && <header id="page-header"><Header /></header>
++      }
++      <main id="page-main"><slot /></main>{
++        !args.prevent.footer && <footer id="page-footer"><Footer /></footer>
++      }
 +    </div>
 +  </body>
 +</html>
-diff --git a/src/layouts/Header.astro b/src/layouts/Header.astro
+diff --git a/src/layouts/index.tsx b/src/layouts/index.tsx
 new file mode 100644
-index 0000000..3dc7e73
+index 0000000..f2c46e5
 --- /dev/null
-+++ b/src/layouts/Header.astro
-@@ -0,0 +1,8 @@
++++ b/src/layouts/index.tsx
+@@ -0,0 +1,3 @@
++export { default as Layout } from './Layout.astro';
++export { default as Header } from './Header.astro';
++export { default as Footer } from './Footer.astro';
+diff --git a/src/modules/AstroStarterKit.astro b/src/modules/AstroStarterKit.astro
+new file mode 100644
+index 0000000..f1148c9
+--- /dev/null
++++ b/src/modules/AstroStarterKit.astro
+@@ -0,0 +1,18 @@
 +---
 +import { Link } from '/src/components';
-+import { args, pages, img } from '/src/config/view';
-+---
-+
-+<div class="content-inner">
-+  <h1 class="siteName"><a href={ pages.top.route }><img src={ img('global/logo.png') } alt={ args.siteName } width="100" height="100"></a></h1>
-+</div>
-diff --git a/src/layouts/Footer.astro b/src/layouts/Footer.astro
-new file mode 100644
-index 0000000..3dc7e73
---- /dev/null
-+++ b/src/layouts/Footer.astro
-@@ -0,0 +1,10 @@
-+---
-+import { Link } from '/src/components';
-+import { args, pages, img } from "/src/config/view";
-+---
-+
-+<div class="content-inner">
-+  <div class="footerArea">
-+    <p class="copyright"><span class="wbr">Copyright 2025</span> <img src={ img('global/logo.png') } alt={ args.siteName } width="30" height="30"> <span class="wbr">Powered by <Link url="https://github.com/debiru/astro" /></span></p>
-+  </div>
-+</div>
-diff --git a/src/pages/index.astro b/src/pages/index.astro
-new file mode 100644
-index 0000000..624aae9
---- /dev/null
-+++ b/src/pages/index.astro
-@@ -0,0 +1,21 @@
-+---
-+import { Link } from '/src/components';
-+import Layout from '/src/layouts/Layout.astro';
-+import Util from '/src/config/Util';
-+import { app, args, pages, assets, img } from '/src/config/view';
-+const pageArgs = {};
-+app.init(Astro, pageArgs);
++import { pages } from '/src/config/view';
 +const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
-+const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then(response => response.text());
++const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then((response) => response.text());
 +---
 +
-+<Layout>
++<div data-mod="AstroStarterKit">
++  <h1>Welcome to Astro Site</h1>
++  <ul>
++    <li><Link page={pages.top} /></li>
++    <li><Link page={pages.subpage} /></li>
++  </ul>
++  <h2>Astro Starter Kit</h2>
++  <p><Link href="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
++  <p><Link href="https://qiita.com/debiru/items/a5ac8219b696045f88f5">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</Link></p>
++  <pre>{ starterKitContent }</pre>
++</div>
+diff --git a/src/modules/index.tsx b/src/modules/index.tsx
+new file mode 100644
+index 0000000..33e8d40
+--- /dev/null
++++ b/src/modules/index.tsx
+@@ -0,0 +1 @@
++export { default as AstroStarterKit } from './AstroStarterKit.astro';
+diff --git a/src/pages/index.astro b/src/pages/index.astro
+index c04f360..6577e9e 100644
+--- a/src/pages/index.astro
++++ b/src/pages/index.astro
+@@ -1,11 +1,13 @@
+ ---
+-import Welcome from '../components/Welcome.astro';
+-import Layout from '../layouts/Layout.astro';
+-
+-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
++import { app, args, pages, assets, img } from '/src/config/view';
++import { Layout } from '/src/layouts';
++import { AstroStarterKit } from '/src/modules';
++app.init(Astro);
++app.setPageConfig();
+ ---
+ 
+ <Layout>
+-	<Welcome />
 +  <div class="content-inner">
-+    <h1>Welcome to Astro Site</h1>
-+    <p><Link url={ pages.subpage.route } label={ pages.subpage.label } /></p>
-+    <h1>Astro Starter Kit</h1>
-+    <p><Link url="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
-+    <p><Link url="https://qiita.com/debiru/items/a5ac8219b696045f88f5" label="10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ" /></p>
-+    <pre>{ starterKitContent }</pre>
++    <AstroStarterKit />
 +  </div>
-+</Layout>
+ </Layout>
 diff --git a/src/pages/subpage/index.astro b/src/pages/subpage/index.astro
 new file mode 100644
-index 0000000..e474d31
+index 0000000..ad1f136
 --- /dev/null
 +++ b/src/pages/subpage/index.astro
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,17 @@
 +---
-+import { Link } from '/src/components';
-+import Layout from '/src/layouts/Layout.astro';
-+import Util from '/src/config/Util';
 +import { app, args, pages, assets, img } from '/src/config/view';
-+const pageArgs = {
++import { Layout } from '/src/layouts';
++import { AstroStarterKit } from '/src/modules';
++app.init(Astro);
++app.setPageConfig({
 +  title: 'Sub page Title',
 +  description: 'Sub page description',
 +  og_image: 'img/pages/subpage/og.png',
-+};
-+app.init(Astro, pageArgs);
++});
 +---
 +
 +<Layout>
 +  <div class="content-inner">
-+    <h1>Sub page</h1>
-+    <p><Link url={ pages.top.route } label={ pages.top.label } /></p>
++    <AstroStarterKit />
 +  </div>
 +</Layout>
