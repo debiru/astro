@@ -234,8 +234,8 @@ new file mode 100644
 index 0000000..8b13789
 --- /dev/null
 +++ b/public/assets/css/components/Link.css
-@@ -0,0 +1 @@
-+
+@@ -0,0 +1,1 @@
++/* Component Style */
 diff --git a/public/assets/css/global/reset.css b/public/assets/css/global/reset.css
 new file mode 100644
 index 0000000..2de5778
@@ -573,6 +573,10 @@ index 0000000..b644665
 diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
 new file mode 100644
 index 0000000..e69de29
+--- /dev/null
++++ b/public/assets/scss/components/Link.scss
+@@ -0,0 +1,1 @@
++/* Component Style */
 diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
 new file mode 100644
 index 0000000..4e2e342
@@ -1309,20 +1313,20 @@ diff --git a/src/pages/index.astro b/src/pages/index.astro
 index c04f360..6577e9e 100644
 --- a/src/pages/index.astro
 +++ b/src/pages/index.astro
-@@ -1,5 +1,13 @@
- ---
+@@ -1,0 +1,13 @@
++---
 +import { app, args, pages, assets, img } from '/src/config/view';
 +import { Layout } from '/src/layouts';
 +import { AstroStarterKit } from '/src/modules';
 +app.init(Astro);
 +app.setPageConfig();
- ---
- 
- <Layout>
++---
++
++<Layout>
 +  <div class="content-inner">
 +    <AstroStarterKit />
 +  </div>
- </Layout>
++</Layout>
 diff --git a/src/pages/subpage/index.astro b/src/pages/subpage/index.astro
 new file mode 100644
 index 0000000..ad1f136
