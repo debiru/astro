@@ -2,8 +2,7 @@ diff --git a/package.json b/package.json
 index e064a12..5b932b7 100644
 --- a/package.json
 +++ b/package.json
-@@ -4,7 +4,12 @@
-   "version": "0.0.1",
+@@ -4,6 +4,11 @@
    "scripts": {
 -    "dev": "astro dev",
 -    "build": "astro build",
