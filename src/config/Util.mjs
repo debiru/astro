@@ -1,4 +1,4 @@
-import astroConfig from '/astro.config';
+import { astroConfig } from './astro';
 import fs from 'fs';
 
 const Util = {
