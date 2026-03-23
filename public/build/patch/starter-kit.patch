@@ -104,26 +104,14 @@ diff --git a/astro.config.mjs b/astro.config.mjs
 index e762ba5..1b6c63e 100644
 --- a/astro.config.mjs
 +++ b/astro.config.mjs
-@@ -1,5 +1,16 @@
+@@ -1,5 +1,4 @@
 -// @ts-check
  import { defineConfig } from 'astro/config';
-+import myExtIntegration from '/src/config/myExtIntegration';
++import { astroConfig } from '/src/config/astro';
  
 -// https://astro.build/config
 -export default defineConfig({});
-+// refs. https://astro.build/config
-+export const config = {
-+  base: '/',
-+  site: 'https://astro.debiru.net',
-+  trailingSlash: 'always',
-+  compressHTML: false,
-+  integrations: [myExtIntegration()],
-+  build: {
-+    format: 'directory',
-+  },
-+};
-+
-+export default defineConfig(config);
++export default defineConfig(astroConfig);
 diff --git a/astro.json b/astro.json
 new file mode 100644
 index 0000000..e249304
@@ -914,7 +902,7 @@ index 0000000..4cc788b
 --- /dev/null
 +++ b/src/config/Util.mjs
 @@ -0,0 +1,104 @@
-+import astroConfig from '/astro.config';
++import { astroConfig } from './astro';
 +import fs from 'fs';
 +
 +const Util = {
@@ -1018,6 +1006,25 @@ index 0000000..4cc788b
 +};
 +
 +export default Util;
+diff --git a/src/config/astro.mjs b/src/config/astro.mjs
+new file mode 100644
+index 0000000..0000000
+--- /dev/null
++++ b/src/config/astro.mjs
+@@ -0,0 +1,13 @@
++import myExtIntegration from './myExtIntegration';
++
++// refs. https://astro.build/config
++export const astroConfig = {
++  base: '/',
++  site: 'https://astro.debiru.net',
++  trailingSlash: 'always',
++  compressHTML: false,
++  integrations: [myExtIntegration()],
++  build: {
++    format: 'directory',
++  },
++};
 diff --git a/src/config/myExtIntegration.mjs b/src/config/myExtIntegration.mjs
 new file mode 100644
 index 0000000..363f1cc
