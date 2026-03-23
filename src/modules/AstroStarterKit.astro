@@ -1,8 +1,7 @@
 ---
 import { Link } from '/src/components';
 import { pages } from '/src/config/view';
-const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
-const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then((response) => response.text());
+import starterKitContent from '/public/build/astro-starter-kit.sh?raw';
 ---
 
 <div data-mod="AstroStarterKit">
