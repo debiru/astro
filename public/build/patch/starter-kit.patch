@@ -484,29 +484,16 @@ new file mode 100644
 index 0000000..496be56
 --- /dev/null
 +++ b/public/assets/css/modules/AstroStarterKit.css
-@@ -0,0 +1,23 @@
+@@ -0,0 +1,10 @@
 +[data-mod=AstroStarterKit] {
 +  padding-bottom: 50px;
-+  text-align: center;
 +}
-+[data-mod=AstroStarterKit] > * {
++[data-mod=AstroStarterKit] h1 {
 +  margin-top: 30px;
-+}
-+[data-mod=AstroStarterKit] h1,
-+[data-mod=AstroStarterKit] h2 {
++  text-align: center;
 +  font-family: serif;
 +  font-weight: bold;
 +  font-size: 3.2rem;
-+}
-+[data-mod=AstroStarterKit] li:not(:first-child) {
-+  margin-top: 10px;
-+}
-+[data-mod=AstroStarterKit] pre {
-+  overflow: auto;
-+  padding: 8px;
-+  border: 1px solid #090;
-+  background: #cfc;
-+  text-align: left;
 +}
 diff --git a/public/assets/css/pages/subpage.css b/public/assets/css/pages/subpage.css
 new file mode 100644
@@ -830,29 +817,16 @@ new file mode 100644
 index 0000000..0c02472
 --- /dev/null
 +++ b/public/assets/scss/modules/AstroStarterKit.scss
-@@ -0,0 +1,24 @@
+@@ -0,0 +1,11 @@
 +[data-mod='AstroStarterKit'] {
 +  padding-bottom: 50px;
-+  text-align: center;
 +
-+  > * {
++  h1 {
 +    margin-top: 30px;
-+  }
-+  h1,
-+  h2 {
++    text-align: center;
 +    font-family: serif;
 +    font-weight: bold;
 +    font-size: 3.2rem;
-+  }
-+  li:not(:first-child) {
-+    margin-top: 10px;
-+  }
-+  pre {
-+    overflow: auto;
-+    padding: 8px;
-+    border: 1px solid #090;
-+    background: #cfc;
-+    text-align: left;
 +  }
 +}
 diff --git a/public/assets/scss/pages/subpage.scss b/public/assets/scss/pages/subpage.scss
@@ -1290,12 +1264,10 @@ new file mode 100644
 index 0000000..f1148c9
 --- /dev/null
 +++ b/src/modules/AstroStarterKit.astro
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,12 @@
 +---
 +import { Link } from '/src/components';
 +import { pages } from '/src/config/view';
-+const starterKitUrl = 'https://astro.debiru.net/build/astro-starter-kit.sh';
-+const starterKitContent = await fetch(starterKitUrl, { cache: 'no-store' }).then((response) => response.text());
 +---
 +
 +<div data-mod="AstroStarterKit">
@@ -1304,10 +1276,6 @@ index 0000000..f1148c9
 +    <li><Link page={pages.top} /></li>
 +    <li><Link page={pages.subpage} /></li>
 +  </ul>
-+  <h2>Astro Starter Kit</h2>
-+  <p><Link href="https://github.com/debiru/astro/blob/main/public/build/astro-starter-kit.sh" /></p>
-+  <p><Link href="https://qiita.com/debiru/items/a5ac8219b696045f88f5">10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ</Link></p>
-+  <pre>{ starterKitContent }</pre>
 +</div>
 diff --git a/src/modules/index.tsx b/src/modules/index.tsx
 new file mode 100644
