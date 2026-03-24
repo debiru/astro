@@ -102,10 +102,10 @@ index 0000000..cae7bf7
 +}
 diff --git a/astro.config.mjs b/astro.config.mjs
 new file mode 100644
-index 0000000..1b6c63e
+index 0000000..a3d21ee
 --- /dev/null
 +++ b/astro.config.mjs
-@@ -1,0 +1,4 @@
+@@ -0,0 +1,4 @@
 +import { defineConfig } from 'astro/config';
 +import { astroConfig } from '/src/config/astro';
 +
@@ -217,10 +217,10 @@ index 0000000..369d9da
 +./sass-watch.sh
 diff --git a/public/assets/css/components/Link.css b/public/assets/css/components/Link.css
 new file mode 100644
-index 0000000..8b13789
+index 0000000..a2dbcbb
 --- /dev/null
 +++ b/public/assets/css/components/Link.css
-@@ -0,0 +1,1 @@
+@@ -0,0 +1 @@
 +/* Component Style */
 diff --git a/public/assets/css/global/reset.css b/public/assets/css/global/reset.css
 new file mode 100644
@@ -479,7 +479,7 @@ index 0000000..4e560f1
 +}
 diff --git a/public/assets/css/modules/AstroStarterKit.css b/public/assets/css/modules/AstroStarterKit.css
 new file mode 100644
-index 0000000..496be56
+index 0000000..42a51d1
 --- /dev/null
 +++ b/public/assets/css/modules/AstroStarterKit.css
 @@ -0,0 +1,10 @@
@@ -545,10 +545,10 @@ index 0000000..b644665
 +})();
 diff --git a/public/assets/scss/components/Link.scss b/public/assets/scss/components/Link.scss
 new file mode 100644
-index 0000000..e69de29
+index 0000000..a2dbcbb
 --- /dev/null
 +++ b/public/assets/scss/components/Link.scss
-@@ -0,0 +1,1 @@
+@@ -0,0 +1 @@
 +/* Component Style */
 diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
 new file mode 100644
@@ -812,7 +812,7 @@ index 0000000..f538538
 +}
 diff --git a/public/assets/scss/modules/AstroStarterKit.scss b/public/assets/scss/modules/AstroStarterKit.scss
 new file mode 100644
-index 0000000..0c02472
+index 0000000..2e2c01f
 --- /dev/null
 +++ b/public/assets/scss/modules/AstroStarterKit.scss
 @@ -0,0 +1,11 @@
@@ -839,7 +839,7 @@ new file mode 100644
 index 0000000..16ae7e9
 --- /dev/null
 +++ b/public/assets/scss/pages/top.scss
-@@ -0,0 +1,1 @@
+@@ -0,0 +1 @@
 +/* top.scss */
 diff --git a/src/components/Link.astro b/src/components/Link.astro
 new file mode 100644
@@ -870,7 +870,7 @@ index 0000000..ddd260f
 +export { default as Link } from './Link.astro';
 diff --git a/src/config/Util.mjs b/src/config/Util.mjs
 new file mode 100644
-index 0000000..4cc788b
+index 0000000..3ee1724
 --- /dev/null
 +++ b/src/config/Util.mjs
 @@ -0,0 +1,104 @@
@@ -980,7 +980,7 @@ index 0000000..4cc788b
 +export default Util;
 diff --git a/src/config/astro.mjs b/src/config/astro.mjs
 new file mode 100644
-index 0000000..0000000
+index 0000000..5972c98
 --- /dev/null
 +++ b/src/config/astro.mjs
 @@ -0,0 +1,13 @@
@@ -1192,9 +1192,10 @@ index 0000000..6c73281
 +</div>
 diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
 new file mode 100644
+index 0000000..032f58e
 --- /dev/null
 +++ b/src/layouts/Layout.astro
-@@ -1,0 +1,53 @@
+@@ -0,0 +1,53 @@
 +---
 +import Util from '/src/config/Util';
 +import { args, rootPath, assets, img } from '/src/config/view';
@@ -1259,7 +1260,7 @@ index 0000000..f2c46e5
 +export { default as Footer } from './Footer.astro';
 diff --git a/src/modules/AstroStarterKit.astro b/src/modules/AstroStarterKit.astro
 new file mode 100644
-index 0000000..f1148c9
+index 0000000..648aaf8
 --- /dev/null
 +++ b/src/modules/AstroStarterKit.astro
 @@ -0,0 +1,12 @@
@@ -1284,9 +1285,10 @@ index 0000000..33e8d40
 +export { default as AstroStarterKit } from './AstroStarterKit.astro';
 diff --git a/src/pages/index.astro b/src/pages/index.astro
 new file mode 100644
+index 0000000..6577e9e
 --- /dev/null
 +++ b/src/pages/index.astro
-@@ -1,0 +1,13 @@
+@@ -0,0 +1,13 @@
 +---
 +import { app, args, pages, assets, img } from '/src/config/view';
 +import { Layout } from '/src/layouts';
