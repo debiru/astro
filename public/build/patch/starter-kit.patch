@@ -110,37 +110,6 @@ index 0000000..a3d21ee
 +import { astroConfig } from '/src/config/astro';
 +
 +export default defineConfig(astroConfig);
-diff --git a/astro.json b/astro.json
-new file mode 100644
-index 0000000..e249304
---- /dev/null
-+++ b/astro.json
-@@ -0,0 +1,25 @@
-+{
-+  "args": {
-+    "siteName": "Astro Starter Kit",
-+    "titleSuffix": "https://github.com/debiru/astro",
-+    "description": "10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ",
-+    "twitterIdWithAtMark": "@debiru_R",
-+    "lang": "ja",
-+    "locale": "ja_JP",
-+    "og_image": "img/global/og.png"
-+  },
-+  "pages": {
-+    "top": {
-+      "key": "top",
-+      "route": "/",
-+      "label": "Top",
-+      "appRoute": "/"
-+    },
-+    "subpage": {
-+      "key": "subpage",
-+      "route": "/subpage/",
-+      "label": "Subpage",
-+      "appRoute": "/subpage/"
-+    }
-+  }
-+}
 diff --git a/build/post-build.sh b/build/post-build.sh
 new file mode 100755
 index 0000000..f8fefb3
@@ -1051,7 +1020,7 @@ index 0000000..363f1cc
 +}
 diff --git a/src/config/view.mjs b/src/config/view.mjs
 new file mode 100644
-index 0000000..19a902d
+index 0000000..a294f7a
 --- /dev/null
 +++ b/src/config/view.mjs
 @@ -0,0 +1,105 @@
@@ -1065,10 +1034,10 @@ index 0000000..19a902d
 +    app.makePage('subpage', '/subpage', 'Subpage');
 +  },
 +  preInit() {
-+    args.siteName = 'Astro Starter Kit';
-+    args.titleSuffix = 'https://github.com/debiru/astro';
-+    args.description = '10分で Astro サイトを GitHub Pages に構築するスターターキットを作ったよ';
-+    args.twitterIdWithAtMark = '@debiru_R';
++    args.siteName = 'SITE_NAME';
++    args.titleSuffix = 'TITLE_SUFFIX';
++    args.description = 'DESCRIPTION';
++    args.twitterIdWithAtMark = 'TWITTER_ID';
 +    args.lang = 'ja';
 +    args.locale = 'ja_JP';
 +    args.og_image = 'img/global/og.png';
