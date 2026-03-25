@@ -15,8 +15,15 @@ shopt -s dotglob
 BASE_URL="https://astro.debiru.net"
 DOMAIN_NAME="$1"
 
+tmps=()
+trap 'rm -f "${tmps[@]}"' EXIT
+
 function apply_patch() {
-  curl -fsSL "${BASE_URL}/build/patch/$1" | git apply --allow-empty --quiet
+  tmp=$(mktemp)
+  tmps+=("$tmp")
+  curl -fsSL "${BASE_URL}/build/patch/$1" -o "$tmp"
+  cat "$tmp" | awk '/^diff --git /{p=$4;sub(/^b\//,"",p);n=0}/^new file mode/{n=1}n&&p{print p;n=0}' | sort -u | xargs -r rm -f --
+  cat "$tmp" | git apply --allow-empty --quiet
 }
 
 function git_commit_if() {
