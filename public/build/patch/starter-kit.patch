@@ -448,10 +448,10 @@ index 0000000..4e560f1
 +}
 diff --git a/public/assets/css/modules/AstroStarterKit.css b/public/assets/css/modules/AstroStarterKit.css
 new file mode 100644
-index 0000000..42a51d1
+index 0000000..af8eb5c
 --- /dev/null
 +++ b/public/assets/css/modules/AstroStarterKit.css
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,18 @@
 +[data-mod=AstroStarterKit] {
 +  padding-bottom: 50px;
 +}
@@ -461,6 +461,14 @@ index 0000000..42a51d1
 +  font-family: serif;
 +  font-weight: bold;
 +  font-size: 3.2rem;
++}
++[data-mod=AstroStarterKit] ul {
++  display: flex;
++  flex-direction: column;
++  justify-content: center;
++  align-items: center;
++  gap: 10px;
++  margin-top: 20px;
 +}
 diff --git a/public/assets/css/pages/subpage.css b/public/assets/css/pages/subpage.css
 new file mode 100644
@@ -521,7 +529,7 @@ index 0000000..a2dbcbb
 +/* Component Style */
 diff --git a/public/assets/scss/global/reset.scss b/public/assets/scss/global/reset.scss
 new file mode 100644
-index 0000000..4e2e342
+index 0000000..2de5778
 --- /dev/null
 +++ b/public/assets/scss/global/reset.scss
 @@ -0,0 +1,191 @@
@@ -645,7 +653,7 @@ index 0000000..4e2e342
 +q::after,
 +blockquote::before,
 +blockquote::after {
-+  content: '';
++  content: "";
 +  content: none;
 +}
 +
@@ -781,11 +789,11 @@ index 0000000..f538538
 +}
 diff --git a/public/assets/scss/modules/AstroStarterKit.scss b/public/assets/scss/modules/AstroStarterKit.scss
 new file mode 100644
-index 0000000..2e2c01f
+index 0000000..7d8ebef
 --- /dev/null
 +++ b/public/assets/scss/modules/AstroStarterKit.scss
-@@ -0,0 +1,11 @@
-+[data-mod='AstroStarterKit'] {
+@@ -0,0 +1,19 @@
++[data-mod="AstroStarterKit"] {
 +  padding-bottom: 50px;
 +
 +  h1 {
@@ -794,6 +802,14 @@ index 0000000..2e2c01f
 +    font-family: serif;
 +    font-weight: bold;
 +    font-size: 3.2rem;
++  }
++  ul {
++    display: flex;
++    flex-direction: column;
++    justify-content: center;
++    align-items: center;
++    gap: 10px;
++    margin-top: 20px;
 +  }
 +}
 diff --git a/public/assets/scss/pages/subpage.scss b/public/assets/scss/pages/subpage.scss
