@@ -69,7 +69,7 @@ perl -i -pe "s@site: '[^']+'@site: 'https://${DOMAIN_NAME}'@smg" src/config/astr
 git_commit_ifs "public/favicon.ico" "(ask-6) generate starter kit"
 
 # 7. Generate package-lock.json
-npm install -D glob js-beautify sass stylelint stylelint-config-standard prettier
+npm install -D glob js-beautify sass stylelint stylelint-config-standard prettier prettier-plugin-astro
 git_commit_ifs "package-lock.json" "(ask-7) npm install"
 
 # 8. Build
