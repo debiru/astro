@@ -41,10 +41,10 @@ index 0000000..b2299bf
 +indent_size = 2
 diff --git a/.prettierrc.mjs b/.prettierrc.mjs
 new file mode 100644
-index 0000000..7c52706
+index 0000000..1a18d40
 --- /dev/null
 +++ b/.prettierrc.mjs
-@@ -0,0 +1,29 @@
+@@ -0,0 +1,35 @@
 +/** @type {import("prettier").Config} */
 +export default {
 +  plugins: ['prettier-plugin-astro'],
@@ -53,6 +53,12 @@ index 0000000..7c52706
 +      files: '*.astro',
 +      options: {
 +        parser: 'astro',
++      },
++    },
++    {
++      files: '*.{css,scss}',
++      options: {
++        singleQuote: false,
 +      },
 +    },
 +  ],

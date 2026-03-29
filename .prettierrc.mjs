@@ -8,6 +8,12 @@ export default {
         parser: 'astro',
       },
     },
+    {
+      files: '*.{css,scss}',
+      options: {
+        singleQuote: false,
+      },
+    },
   ],
   astroSkipFrontmatter: false,
   printWidth: 1024,
