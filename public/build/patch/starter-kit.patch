@@ -1042,7 +1042,7 @@ index 0000000..363f1cc
 +}
 diff --git a/src/config/view.mjs b/src/config/view.mjs
 new file mode 100644
-index 0000000..a294f7a
+index 0000000..81077d7
 --- /dev/null
 +++ b/src/config/view.mjs
 @@ -0,0 +1,105 @@
@@ -1059,7 +1059,7 @@ index 0000000..a294f7a
 +    args.siteName = 'SITE_NAME';
 +    args.titleSuffix = 'TITLE_SUFFIX';
 +    args.description = 'DESCRIPTION';
-+    args.twitterIdWithAtMark = 'TWITTER_ID';
++    args.twitterIdWithAtMark = '@TWITTER_ID'; // @YOUR_ID
 +    args.lang = 'ja';
 +    args.locale = 'ja_JP';
 +    args.og_image = 'img/global/og.png';
