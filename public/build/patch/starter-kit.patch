@@ -971,10 +971,10 @@ index 0000000..3ee1724
 +export default Util;
 diff --git a/src/config/astro.mjs b/src/config/astro.mjs
 new file mode 100644
-index 0000000..5972c98
+index 0000000..da8142f
 --- /dev/null
 +++ b/src/config/astro.mjs
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,16 @@
 +import myExtIntegration from './myExtIntegration';
 +
 +// refs. https://astro.build/config
@@ -986,6 +986,9 @@ index 0000000..5972c98
 +  integrations: [myExtIntegration()],
 +  build: {
 +    format: 'directory',
++  },
++  vite: {
++    logLevel: 'error',
 +  },
 +};
 diff --git a/src/config/myExtIntegration.mjs b/src/config/myExtIntegration.mjs

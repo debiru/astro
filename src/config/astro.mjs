@@ -10,4 +10,7 @@ export const astroConfig = {
   build: {
     format: 'directory',
   },
+  vite: {
+    logLevel: 'error',
+  },
 };
