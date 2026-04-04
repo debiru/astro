@@ -1045,10 +1045,10 @@ index 0000000..363f1cc
 +}
 diff --git a/src/config/view.mjs b/src/config/view.mjs
 new file mode 100644
-index 0000000..81077d7
+index 0000000..36d5611
 --- /dev/null
 +++ b/src/config/view.mjs
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,110 @@
 +import Util from '/src/config/Util';
 +
 +export const args = {};
@@ -1070,10 +1070,15 @@ index 0000000..81077d7
 +  postInit(pageArgs) {
 +    app.args = pageArgs ?? {};
 +
++    const prevent = structuredClone(args.prevent);
 +    // Overwrite args parameters
 +    Object.entries(app.args).forEach(([key, value]) => {
 +      args[key] = value;
 +    });
++    Object.entries(prevent).forEach(([key, value]) => {
++      args.prevent[key] ??= value;
++    });
++
 +    // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
 +    args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | ' });
 +
@@ -1186,10 +1191,10 @@ index 0000000..6c73281
 +</div>
 diff --git a/src/layouts/Layout.astro b/src/layouts/Layout.astro
 new file mode 100644
-index 0000000..032f58e
+index 0000000..3d82763
 --- /dev/null
 +++ b/src/layouts/Layout.astro
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,58 @@
 +---
 +import Util from '/src/config/Util';
 +import { args, rootPath, assets, img } from '/src/config/view';
@@ -1197,48 +1202,53 @@ index 0000000..032f58e
 +import Footer from './Footer.astro';
 +---
 +
-+<!DOCTYPE html>
-+<html lang={ args.lang } data-key={ args.page.key } data-route={ args.page.route } data-app-route={ args.page.appRoute }>
++<!doctype html>
++<html lang={args.lang} data-key={args.page.key} data-route={args.page.route} data-app-route={args.page.appRoute}>
 +  <head>
 +    <meta charset="UTF-8" />
-+    <title>{ args.title }</title>
-+    <meta name="description" content={ args.description } />
++    <title>{args.title}</title>
++    <meta name="description" content={args.description} />
 +
 +    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 +    <meta name="format-detection" content="telephone=no, email=no, address=no" />
-+    <meta name="generator" content={ Astro.generator } />
-+    <meta property="og:locale" content={ args.locale } />
-+    <meta property="og:type" content={ args.og_type } />
-+    <meta property="og:site_name" content={ args.siteName } />
-+    <meta property="og:title" content={ args.title } />
-+    <meta property="og:description" content={ args.description } />
-+    <meta property="og:image" content={ args.og_image } />
-+    <meta property="og:url" content={ args.url } />
++    <meta name="generator" content={Astro.generator} />
++
++    <meta property="og:locale" content={args.locale} />
++    <meta property="og:type" content={args.og_type} />
++    <meta property="og:site_name" content={args.siteName} />
++    <meta property="og:title" content={args.title} />
++    <meta property="og:description" content={args.description} />
++    <meta property="og:image" content={args.og_image} />
++    <meta property="og:url" content={args.url} />
 +
 +    <meta name="twitter:card" content="summary_large_image" />
-+    <meta name="twitter:title" content={ args.title } />
-+    <meta name="twitter:description" content={ args.description } />
-+    <meta name="twitter:site" content={ args.twitterIdWithAtMark } />
++    <meta name="twitter:title" content={args.title} />
++    <meta name="twitter:description" content={args.description} />
++    <meta name="twitter:site" content={args.twitterIdWithAtMark} />
 +
-+    <link rel="icon" type="image/vnd.microsoft.icon" href={ rootPath('favicon.ico', true) } />{
-+      !args.prevent.css.reset && <link rel="stylesheet" href={ assets('css/global/reset.css', true) } />
-+    }{
-+      !args.prevent.css.style && <link rel="stylesheet" href={ assets('css/global/style.css', true) } />
-+    }
-+    <script src={ assets('js/global/base.js', true) }></script>{
-+      (args.assetList.css.length > 0 || args.assetList.js.length > 0) && '\n\n'
-+    }{
-+      args.assetList.css.map((css) => <link rel="stylesheet" href={ assets('css/' + Util.ltrim(css), true) } />)
-+    }{
-+      args.assetList.js.map((js) => <script src={ assets('js/' + Util.ltrim(js), true) } />)
-+    }
++    <link rel="icon" type="image/vnd.microsoft.icon" href={rootPath('favicon.ico', true)} />
++    {!args.prevent.css.reset && <link rel="stylesheet" href={assets('css/global/reset.css', true)} />}
++    {!args.prevent.css.style && <link rel="stylesheet" href={assets('css/global/style.css', true)} />}
++    <script src={assets('js/global/base.js', true)}></script>
++    {args.assetList.css.map((css) => <link rel="stylesheet" href={assets('css/' + Util.ltrim(css), true)} />)}
++    {args.assetList.js.map((js) => <script src={assets('js/' + Util.ltrim(js), true)} />)}
 +  </head>
 +  <body>
-+    <div id="page-container">{
-+        !args.prevent.header && <header id="page-header"><Header /></header>
++    <div id="page-container">
++      {
++        !args.prevent.header && (
++          <header id="page-header">
++            <Header />
++          </header>
++        )
 +      }
-+      <main id="page-main"><slot /></main>{
-+        !args.prevent.footer && <footer id="page-footer"><Footer /></footer>
++      <main id="page-main"><slot /></main>
++      {
++        !args.prevent.footer && (
++          <footer id="page-footer">
++            <Footer />
++          </footer>
++        )
 +      }
 +    </div>
 +  </body>
@@ -1298,16 +1308,24 @@ index 0000000..6577e9e
 +</Layout>
 diff --git a/src/pages/subpage/index.astro b/src/pages/subpage/index.astro
 new file mode 100644
-index 0000000..ad1f136
+index 0000000..01577cb
 --- /dev/null
 +++ b/src/pages/subpage/index.astro
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,25 @@
 +---
 +import { app, args, pages, assets, img } from '/src/config/view';
 +import { Layout } from '/src/layouts';
 +import { AstroStarterKit } from '/src/modules';
 +app.init(Astro);
 +app.setPageConfig({
++  prevent: {
++    css: {
++      reset: true,
++      style: true,
++    },
++    header: true,
++    footer: true,
++  },
 +  title: 'Sub page Title',
 +  description: 'Sub page description',
 +  og_image: 'img/pages/subpage/og.png',

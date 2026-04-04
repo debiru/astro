@@ -19,10 +19,15 @@ export const app = {
   postInit(pageArgs) {
     app.args = pageArgs ?? {};
 
+    const prevent = structuredClone(args.prevent);
     // Overwrite args parameters
     Object.entries(app.args).forEach(([key, value]) => {
       args[key] = value;
     });
+    Object.entries(prevent).forEach(([key, value]) => {
+      args.prevent[key] ??= value;
+    });
+
     // <title>PAGE_TITLE - SITE_NAME | TITLE_SUFFIX</title>
     args.title = Util.concatStr(app.args.title, { suffix: ' - ' }) + args.siteName + Util.concatStr(args.titleSuffix, { prefix: ' | ' });
 
